@@ -1,0 +1,67 @@
+swagger: '2.0'
+info:
+  title: Image Mood Classifier Example
+  version: "0.3"
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /classify_tags:
+    post:
+      operationId: app.classify_tags
+      summary: Post CSV/JSON data for mood determination
+      parameters:
+        - $ref: '#/parameters/tag_scores'
+        - $ref: '#/parameters/rich_output'
+      responses:
+        200:
+          description: Image mood processed
+  /classify:
+    post:
+      operationId: app.classify_image
+      summary: Post an image for image mood determination
+      parameters:
+        - $ref: '#/parameters/mime_type'
+        - $ref: '#/parameters/image_binary'
+        - $ref: '#/parameters/rich_output'
+        - $ref: '#/parameters/native_transform'
+      responses:
+        200:
+          description: Image mood processed
+
+parameters:
+  mime_type:
+    name: mime_type
+    description: Image MimeType
+    in: formData
+    type: string
+    required: true
+    default: 'image/jpeg'
+    # pattern: "^[a-zA-Z0-9-]+$"
+  image_binary:
+    name: image_binary
+    description: Binary image blob
+    in: formData
+    type: file
+    required: true
+  tag_scores:
+    name: tag_scores
+    description: Predicted tag scores
+    in: formData
+    type: file
+    required: true
+  rich_output:
+    name: rich_output
+    description: Rich or regular output
+    in: formData
+    type: boolean
+    required: false
+    default: true
+  native_transform:
+    name: native_transform
+    description: Transform to native object between models
+    in: formData
+    type: boolean
+    required: false
+    default: false

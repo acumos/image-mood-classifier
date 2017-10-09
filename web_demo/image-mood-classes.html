@@ -1,0 +1,66 @@
+<html>
+<!--
+image-mood-classes.html - Demonstrate an image mood classification service
+D. Gibbon 8/1/17
+E. Zavesky 10/11/17
+Rewrite to utilize simple image-based processing steps.
+-->
+<head>
+<title>Image Mood Classification</title>
+<link rel="stylesheet" type="text/css" href="image-mood-classes.css" />
+<script type="text/javascript" src="thumbnailer.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="image-mood-classes.js"></script>
+</head>
+<body>
+<div>
+    <canvas id="srcImgCanvas" width="480" height="270" ></canvas>
+</div>
+<div id="resultsDiv"><div class="header">Image Mood</div></div>
+<div id='videoSelector'></div>
+<div id="sourceRibbon">
+    <span class="tiny">Select an image for analysis or upload your own!</span><br />
+    <div>
+        <img src="images/example_excitement_2.jpg" />
+        <span><a href="https://flic.kr/p/ayaqeQ" target="_new">flikr source</a></span>
+    </div>
+    <div>
+        <img src="images/example_awe_1.jpg" />
+        <span><a href="https://flic.kr/p/RLzkvA" target="_new">flikr source</a></span>
+    </div>
+    <div>
+        <img src="images/example_excitement_1.jpg" />
+        <span><a href="https://flic.kr/p/fN8y4d" target="_new">flikr source</a></span>
+    </div>
+    <div>
+        <img src="images/example_sad_1.jpg" />
+        <span><a href="https://flic.kr/p/8Kmqib" target="_new">flickr source</a></span>
+    </div>
+    <div>
+        <label>Custom Upload</label><br/>
+        <input type="file" id="imageLoader" name="imageLoader"/>
+    </div>
+</div>
+    <br />
+    <span class="tiny"><em>Note: These sample images are copyright of their original authors and are provided
+        only for testing and demonstration purposes, and are not authorized for sale or redistribution
+        outside of this context.</em>
+    </span>
+
+<hr  />
+<form action="javascript:void(0);">
+    <label for="serverUrl">Transform URL:</label><input type="text" name="serverUrl" id="serverUrl" size="60" />
+    <br /><span class="tiny"><strong>PRO TIP:</strong>Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span>
+</form>
+<hr  />
+<div>
+    Image mood classification using <em>image-classifier</em> output tags
+    (from <a href="http://image-net.org/challenges/LSVRC/2014/browse-synsets">1000 classes</a>).  Training data comes from the
+    "art photos" from this <a href="https://dl.acm.org/citation.cfm?id=1873965" target="_new">academic work</a>,
+    with <a href="http://www.imageemotion.org" target="_new">available dataset files</a>.
+<br/>
+<br/>
+<a href='http://www.research.att.com/projects/Video/'>Video and Multimedia Technologies Research</a>
+</div>
+</body>
+</html>
