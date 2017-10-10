@@ -1,0 +1,9 @@
+idx,moods,predictions
+0,contentment,0.276
+0,awe,0.246
+0,sad,0.18
+0,excitement,0.088
+0,amusement,0.058
+0,anger,0.054
+0,disgust,0.05
+0,fear,0.048
