@@ -11,7 +11,7 @@ with open(os.path.join(setup_dir, 'image_mood_classifier', '_version.py')) as fi
 
 
 setup(
-    name = "image_mood_classifier",
+    name = globals_dict['MODEL_NAME'],
     version = __version__,
     packages = find_packages(),
     author = "Eric Zavesky",
@@ -19,7 +19,7 @@ setup(
     description = ("Image mood classification tool using underlying scene classification"),
     long_description = ("Image mood classification tool using underlying scene classification"),
     license = "Apache",
-    package_data={'image_mood_classification':['data/*']},
+    package_data={globals_dict['MODEL_NAME']:['data/*']},
     scripts=['bin/run_image-mood-classifier_reference.py'],
     setup_requires=['pytest-runner'],
     entry_points="""
@@ -29,7 +29,7 @@ setup(
     install_requires=['cognita_client',
                       'numpy',
                       'sklearn',
-                      'image_mood_classifier'],
+                      globals_dict['MODEL_NAME']],
     tests_require=['pytest',
                    'pexpect'],
     include_package_data=True,

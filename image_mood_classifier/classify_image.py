@@ -15,9 +15,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-from prediction_formatter import Formatter
-
-MODEL_NAME = 'image_mood_classifier'
+from image_mood_classifier.prediction_formatter import Formatter
+from image_mood_classifier._version import MODEL_NAME
 
 def load_dataset(path_features=None):
     """Load a multi-line dataset from image_classifier data format.  Required columns: idx (int64), classes (string), predictions (double)"""
@@ -135,7 +134,7 @@ def main(config={}):
     if config['cuda_env']:
         os.environ['CUDA_VISIBLE_DEVICES'] = config['cuda_env']
 
-    if not config['predict_path']:
+    if not config['predict_path'] and config['labels']:
         if not os.path.exists(config['labels']):
             print("The target labels '{:}' was not found, please check input arguments.".format(config['labels']))
             sys.exit(-1)
@@ -149,20 +148,22 @@ def main(config={}):
         formatter.learn_input_mapping(rawDf, "classes", "idx", "predictions")
         print("Converting block of {:} responses into training data, expecting {:} samples...".format(len(rawDf), len(rawLabel)))
         objRefactor = formatter.transform_raw_sample(rawDf, rawLabel)
+        clf = None
 
         # train a classifier with refactored data
-        import pickle
-        if not os.path.exists('model_cf.pkl'):
-            print("Training a new one...")
-            with open("model_cf.pkl", "wb") as f:
-                pickle.dump(clf, f)
-        else:
-            print("Loading an old one...")
-            with open("model_cf.pkl", "rb") as f:
-                clf = pickle.load(f)
+        # import pickle
+        # if not os.path.exists('model_cf.pkl'):
+        #     print("Training a new one...")
+        #     with open("model_cf.pkl", "wb") as f:
+        #         pickle.dump(clf, f)
+        # else:
+        #     print("Loading an old one...")
+        #     with open("model_cf.pkl", "rb") as f:
+        #         clf = pickle.load(f)
 
         # create pipeline to dump via client library
-        # clf = classifier_train(objRefactor['values'], objRefactor['labels'], config['model_type'])
+        if clf is None:
+            clf = classifier_train(objRefactor['values'], objRefactor['labels'], config['model_type'])
         pipeline, EXTRA_DEPS = model_create_pipeline(formatter, clf)
 
         # formulate the pipeline to be used
@@ -186,8 +187,9 @@ def main(config={}):
         model = load_model(config['dump_model'])
         dfPred = model.transform.from_native(rawDf).as_native()
 
-        print("Writing prediction to file '{:}'...".format(config['predict_path']))
-        dfPred.to_csv(config['predict_path'], sep=",", index=False)
+        if config['predict_path']:
+            print("Writing prediction to file '{:}'...".format(config['predict_path']))
+            dfPred.to_csv(config['predict_path'], sep=",", index=False)
 
         if dfPred is not None:
             print("Predictions:\n{:}".format(dfPred))

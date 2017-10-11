@@ -29,7 +29,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
         self.input_columns = input_columns
         self.input_map = input_map
         self.class_list = None
-        print("SET: {:}".format(self.class_map))
+        #print("SET: {:}".format(self.class_map))
 
     def learn_class_mapping(self, raw_labels):
         """Method to learn input mapping from raw samples """
@@ -101,13 +101,18 @@ class Formatter(BaseEstimator, ClassifierMixin):
             print("Error: No underlying classifier provided, aborting!")
             return None
         objTransform = self.transform_raw_sample(X, y)
+        #xx = self.classifier.predict(objTransform['values'])
+        #print(xx)
         X = np.array(self.classifier.predict_proba(objTransform['values']))
-        print("PREDICT: {:}".format(self.class_map))
+
+        # always prefer to get class list from the classifier, if available
+        if self.class_list is None and hasattr(self.classifier, 'classes_'):
+            self.class_list = self.classifier.classes_
 
         df_predict_set = None
         for image_idx in range(len(X)):
             np_predict = X[image_idx,:]
-            print(np_predict)
+            #print(np_predict)
             if self.class_list is None:  # may need to init from map one time
                 num_class = len(np_predict)
                 self.class_list = Formatter.prediction_list_gen(self.class_map, range(num_class))
@@ -145,7 +150,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
             dict_classes = None
             if path_class is None or not path_class:
                 dict_classes = eval(open(path_class, 'r').read())
-            print("CONFIRM: {:}".format(list(df.index)))
+            #print("CONFIRM: {:}".format(list(df.index)))
             class_list = Formatter.prediction_list_gen(dict_classes, list(df.index))
         df.insert(0, Formatter.COL_NAME_CLASS, class_list)
 

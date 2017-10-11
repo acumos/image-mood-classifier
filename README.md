@@ -29,19 +29,50 @@ packaging of a model (both dump and posting), and simple web-test
 uses.   All functionality is encapsulated in the `classify_image.py`
 script and has the following arguments.
 
+```
+usage: run_image-mood-classifier_reference.py [-h] [-l LABELS]
+                                              [-p PREDICT_PATH] [-i INPUT]
+                                              [-C CUDA_ENV] [-m MODEL_TYPE]
+                                              [-a PUSH_ADDRESS]
+                                              [-d DUMP_MODEL]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LABELS, --labels LABELS
+                        Path to label one-column file with one row for each
+                        input
+  -p PREDICT_PATH, --predict_path PREDICT_PATH
+                        Save predictions from model (model must be provided
+                        via 'dump_model')
+  -i INPUT, --input INPUT
+                        Absolute path to input training data file. (for now
+                        must be a header-less CSV)
+  -C CUDA_ENV, --cuda_env CUDA_ENV
+                        Anything special to inject into CUDA_VISIBLE_DEVICES
+                        environment string
+  -m MODEL_TYPE, --model_type MODEL_TYPE
+                        specify the underlying classifier type (rf
+                        (randomforest), svc (SVM))
+  -a PUSH_ADDRESS, --push_address PUSH_ADDRESS
+                        server address to push the model (e.g.
+                        http://localhost:8887/v2/models)
+  -d DUMP_MODEL, --dump_model DUMP_MODEL
+                        dump model to a pickle directory for local running
+```
+
 
 ### Examples
 Example for training the classifier on the provided dataset. Note, the
 features have already been processed by the *image-classification (v0.3)*
 model and stored in that native format in [features_testImages_artphoto.csv.bz2](data/features_testImages_artphoto.csv.bz2).
 ```
-python classify_image.py -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
+./bin/run_local.sh -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
 ```
 
 Example for evaluating a set of features from the *image-classification*
 model.
 ```
-python classify_image.py  -i data/example_awe_1.csv -d model -p data/example_mood.csv
+./bin/run_local.sh -i data/example_awe_1.csv -d model -p data/example_mood.csv
 ```
 
 ### Performance Analysis
@@ -49,6 +80,20 @@ A training analysis of results demonstrates that this problem is not trivial.
 Contrary to the results in the original publication, F1 scores for
 methods in this model are not that high.
 ```
+(Random Forest - 300 estimators); the default
+             precision    recall  f1-score   support
+
+  amusement       0.29      0.27      0.28        22
+      anger       0.25      0.10      0.14        10
+        awe       0.37      0.37      0.37        19
+contentment       0.50      0.45      0.48        11
+    disgust       0.21      0.27      0.24        11
+ excitement       0.38      0.31      0.34        26
+       fear       0.38      0.55      0.44        22
+        sad       0.29      0.29      0.29        41
+
+avg / total       0.33      0.33      0.33       162
+
 (Support Vector Multiclass - linear kernel)
              precision    recall  f1-score   support
 
@@ -63,22 +108,8 @@ contentment       0.21      0.27      0.24        11
 
 avg / total       0.29      0.28      0.28       162
 
-(Random Forest - 300 estimators)
-             precision    recall  f1-score   support
-
-  amusement       0.29      0.27      0.28        22
-      anger       0.00      0.00      0.00        10
-        awe       0.44      0.37      0.40        19
-contentment       0.50      0.36      0.42        11
-    disgust       0.38      0.27      0.32        11
- excitement       0.50      0.35      0.41        26
-       fear       0.38      0.68      0.49        22
-        sad       0.35      0.41      0.38        41
-
-avg / total       0.37      0.38      0.36       162
 
 ```
-
 
 # Example Interface
 An instance should first be built and downloaded from Cognita and then
