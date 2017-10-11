@@ -1,0 +1,502 @@
+[
+    {
+        "classes": "steel arch bridge",
+        "idx": 0,
+        "predictions": 0.43294963240623474
+    },
+    {
+        "classes": "pier",
+        "idx": 0,
+        "predictions": 0.3302139341831207
+    },
+    {
+        "classes": "suspension bridge",
+        "idx": 0,
+        "predictions": 0.04886658489704132
+    },
+    {
+        "classes": "crane",
+        "idx": 0,
+        "predictions": 0.04305052012205124
+    },
+    {
+        "classes": "viaduct",
+        "idx": 0,
+        "predictions": 0.008062344044446945
+    },
+    {
+        "classes": "fireboat",
+        "idx": 0,
+        "predictions": 0.004457405302673578
+    },
+    {
+        "classes": "paddlewheel, paddle wheel",
+        "idx": 0,
+        "predictions": 0.002449040999636054
+    },
+    {
+        "classes": "water tower",
+        "idx": 0,
+        "predictions": 0.0014766938984394073
+    },
+    {
+        "classes": "lakeside, lakeshore",
+        "idx": 0,
+        "predictions": 0.0012923871399834752
+    },
+    {
+        "classes": "drilling platform, offshore rig",
+        "idx": 0,
+        "predictions": 0.0012374893995001912
+    },
+    {
+        "classes": "beacon, lighthouse, beacon light, pharos",
+        "idx": 0,
+        "predictions": 0.0011137760011479259
+    },
+    {
+        "classes": "dock, dockage, docking facility",
+        "idx": 0,
+        "predictions": 0.0010709899943321943
+    },
+    {
+        "classes": "tripod",
+        "idx": 0,
+        "predictions": 0.0010706406319513917
+    },
+    {
+        "classes": "microphone, mike",
+        "idx": 0,
+        "predictions": 0.0009978230809792876
+    },
+    {
+        "classes": "breakwater, groin, groyne, mole, bulwark, seawall, jetty",
+        "idx": 0,
+        "predictions": 0.0009675283217802644
+    },
+    {
+        "classes": "fire engine, fire truck",
+        "idx": 0,
+        "predictions": 0.000957179581746459
+    },
+    {
+        "classes": "bannister, banister, balustrade, balusters, handrail",
+        "idx": 0,
+        "predictions": 0.0008745364029891789
+    },
+    {
+        "classes": "valley, vale",
+        "idx": 0,
+        "predictions": 0.0007983787800185382
+    },
+    {
+        "classes": "container ship, containership, container vessel",
+        "idx": 0,
+        "predictions": 0.0007571939495392144
+    },
+    {
+        "classes": "radio telescope, radio reflector",
+        "idx": 0,
+        "predictions": 0.000742349133361131
+    },
+    {
+        "classes": "cannon",
+        "idx": 0,
+        "predictions": 0.0007390612736344337
+    },
+    {
+        "classes": "promontory, headland, head, foreland",
+        "idx": 0,
+        "predictions": 0.0007018473697826266
+    },
+    {
+        "classes": "chainlink fence",
+        "idx": 0,
+        "predictions": 0.0006122967461124063
+    },
+    {
+        "classes": "stage",
+        "idx": 0,
+        "predictions": 0.0005809088470414281
+    },
+    {
+        "classes": "hook, claw",
+        "idx": 0,
+        "predictions": 0.000558224506676197
+    },
+    {
+        "classes": "airship, dirigible",
+        "idx": 0,
+        "predictions": 0.0005550976493395865
+    },
+    {
+        "classes": "holster",
+        "idx": 0,
+        "predictions": 0.0005201979074627161
+    },
+    {
+        "classes": "traffic light, traffic signal, stoplight",
+        "idx": 0,
+        "predictions": 0.0005167195340618491
+    },
+    {
+        "classes": "remote control, remote",
+        "idx": 0,
+        "predictions": 0.0005120399873703718
+    },
+    {
+        "classes": "megalith, megalithic structure",
+        "idx": 0,
+        "predictions": 0.0005109370686113834
+    },
+    {
+        "classes": "dam, dike, dyke",
+        "idx": 0,
+        "predictions": 0.0004882963839918375
+    },
+    {
+        "classes": "liner, ocean liner",
+        "idx": 0,
+        "predictions": 0.0004827863594982773
+    },
+    {
+        "classes": "boathouse",
+        "idx": 0,
+        "predictions": 0.00047760221059434116
+    },
+    {
+        "classes": "canoe",
+        "idx": 0,
+        "predictions": 0.0004694100352935493
+    },
+    {
+        "classes": "seashore, coast, seacoast, sea-coast",
+        "idx": 0,
+        "predictions": 0.0004595877544488758
+    },
+    {
+        "classes": "turnstile",
+        "idx": 0,
+        "predictions": 0.0004528020217549056
+    },
+    {
+        "classes": "spotlight, spot",
+        "idx": 0,
+        "predictions": 0.0004512720333877951
+    },
+    {
+        "classes": "fountain",
+        "idx": 0,
+        "predictions": 0.00044827614328823984
+    },
+    {
+        "classes": "monarch, monarch butterfly, milkweed butterfly, Danaus plexippus",
+        "idx": 0,
+        "predictions": 0.0004452812427189201
+    },
+    {
+        "classes": "umbrella",
+        "idx": 0,
+        "predictions": 0.00041566844447515905
+    },
+    {
+        "classes": "castle",
+        "idx": 0,
+        "predictions": 0.00041008065454661846
+    },
+    {
+        "classes": "analog clock",
+        "idx": 0,
+        "predictions": 0.00040303089190274477
+    },
+    {
+        "classes": "black stork, Ciconia nigra",
+        "idx": 0,
+        "predictions": 0.00038741197204217315
+    },
+    {
+        "classes": "bicycle-built-for-two, tandem bicycle, tandem",
+        "idx": 0,
+        "predictions": 0.00038105325074866414
+    },
+    {
+        "classes": "kimono",
+        "idx": 0,
+        "predictions": 0.0003785478475037962
+    },
+    {
+        "classes": "European gallinule, Porphyrio porphyrio",
+        "idx": 0,
+        "predictions": 0.00037852692184969783
+    },
+    {
+        "classes": "flagpole, flagstaff",
+        "idx": 0,
+        "predictions": 0.000375359202735126
+    },
+    {
+        "classes": "greenhouse, nursery, glasshouse",
+        "idx": 0,
+        "predictions": 0.0003702926333062351
+    },
+    {
+        "classes": "steam locomotive",
+        "idx": 0,
+        "predictions": 0.0003633390588220209
+    },
+    {
+        "classes": "limpkin, Aramus pictus",
+        "idx": 0,
+        "predictions": 0.0003430360520724207
+    },
+    {
+        "classes": "gong, tam-tam",
+        "idx": 0,
+        "predictions": 0.00034070934634655714
+    },
+    {
+        "classes": "Brittany spaniel",
+        "idx": 0,
+        "predictions": 0.00033805856946855783
+    },
+    {
+        "classes": "hair spray",
+        "idx": 0,
+        "predictions": 0.0003380027774255723
+    },
+    {
+        "classes": "geyser",
+        "idx": 0,
+        "predictions": 0.00033595183049328625
+    },
+    {
+        "classes": "groom, bridegroom",
+        "idx": 0,
+        "predictions": 0.0003338991373311728
+    },
+    {
+        "classes": "swing",
+        "idx": 0,
+        "predictions": 0.00032862002262845635
+    },
+    {
+        "classes": "shopping cart",
+        "idx": 0,
+        "predictions": 0.00032850675052031875
+    },
+    {
+        "classes": "freight car",
+        "idx": 0,
+        "predictions": 0.0003198963822796941
+    },
+    {
+        "classes": "harvester, reaper",
+        "idx": 0,
+        "predictions": 0.00031765931635163724
+    },
+    {
+        "classes": "passenger car, coach, carriage",
+        "idx": 0,
+        "predictions": 0.00031317153479903936
+    },
+    {
+        "classes": "rugby ball",
+        "idx": 0,
+        "predictions": 0.0003091864928137511
+    },
+    {
+        "classes": "lion, king of beasts, Panthera leo",
+        "idx": 0,
+        "predictions": 0.00030901876743882895
+    },
+    {
+        "classes": "bull mastiff",
+        "idx": 0,
+        "predictions": 0.0003062572795897722
+    },
+    {
+        "classes": "cab, hack, taxi, taxicab",
+        "idx": 0,
+        "predictions": 0.0003021341108251363
+    },
+    {
+        "classes": "binoculars, field glasses, opera glasses",
+        "idx": 0,
+        "predictions": 0.0002977987751364708
+    },
+    {
+        "classes": "goose",
+        "idx": 0,
+        "predictions": 0.0002936973178293556
+    },
+    {
+        "classes": "sloth bear, Melursus ursinus, Ursus ursinus",
+        "idx": 0,
+        "predictions": 0.0002907549496740103
+    },
+    {
+        "classes": "black swan, Cygnus atratus",
+        "idx": 0,
+        "predictions": 0.00028624242986552417
+    },
+    {
+        "classes": "vulture",
+        "idx": 0,
+        "predictions": 0.00028474305872805417
+    },
+    {
+        "classes": "park bench",
+        "idx": 0,
+        "predictions": 0.0002845863054972142
+    },
+    {
+        "classes": "scoreboard",
+        "idx": 0,
+        "predictions": 0.00027945690089836717
+    },
+    {
+        "classes": "white stork, Ciconia ciconia",
+        "idx": 0,
+        "predictions": 0.0002783257223200053
+    },
+    {
+        "classes": "Airedale, Airedale terrier",
+        "idx": 0,
+        "predictions": 0.00027341017266735435
+    },
+    {
+        "classes": "picket fence, paling",
+        "idx": 0,
+        "predictions": 0.00027116210549138486
+    },
+    {
+        "classes": "matchstick",
+        "idx": 0,
+        "predictions": 0.0002699971664696932
+    },
+    {
+        "classes": "patio, terrace",
+        "idx": 0,
+        "predictions": 0.0002696232695598155
+    },
+    {
+        "classes": "stretcher",
+        "idx": 0,
+        "predictions": 0.0002684503560885787
+    },
+    {
+        "classes": "triumphal arch",
+        "idx": 0,
+        "predictions": 0.0002665738284122199
+    },
+    {
+        "classes": "Gila monster, Heloderma suspectum",
+        "idx": 0,
+        "predictions": 0.0002639987214934081
+    },
+    {
+        "classes": "pole",
+        "idx": 0,
+        "predictions": 0.0002607593487482518
+    },
+    {
+        "classes": "American alligator, Alligator mississipiensis",
+        "idx": 0,
+        "predictions": 0.0002597380371298641
+    },
+    {
+        "classes": "radio, wireless",
+        "idx": 0,
+        "predictions": 0.00025967563851736486
+    },
+    {
+        "classes": "cliff, drop, drop-off",
+        "idx": 0,
+        "predictions": 0.0002539473061915487
+    },
+    {
+        "classes": "parking meter",
+        "idx": 0,
+        "predictions": 0.00025383970933035016
+    },
+    {
+        "classes": "Saint Bernard, St Bernard",
+        "idx": 0,
+        "predictions": 0.00025209281011484563
+    },
+    {
+        "classes": "bottlecap",
+        "idx": 0,
+        "predictions": 0.00024618490715511143
+    },
+    {
+        "classes": "Christmas stocking",
+        "idx": 0,
+        "predictions": 0.00024310775916092098
+    },
+    {
+        "classes": "malamute, malemute, Alaskan malamute",
+        "idx": 0,
+        "predictions": 0.00024035500246100128
+    },
+    {
+        "classes": "vault",
+        "idx": 0,
+        "predictions": 0.0002370424335822463
+    },
+    {
+        "classes": "lumbermill, sawmill",
+        "idx": 0,
+        "predictions": 0.00023574566876050085
+    },
+    {
+        "classes": "bell cote, bell cot",
+        "idx": 0,
+        "predictions": 0.00023540205438621342
+    },
+    {
+        "classes": "dingo, warrigal, warragal, Canis dingo",
+        "idx": 0,
+        "predictions": 0.000235051877098158
+    },
+    {
+        "classes": "swab, swob, mop",
+        "idx": 0,
+        "predictions": 0.00023464234254788607
+    },
+    {
+        "classes": "pizza, pizza pie",
+        "idx": 0,
+        "predictions": 0.00023274199338629842
+    },
+    {
+        "classes": "plate rack",
+        "idx": 0,
+        "predictions": 0.0002309997216798365
+    },
+    {
+        "classes": "Rottweiler",
+        "idx": 0,
+        "predictions": 0.00022891904518473893
+    },
+    {
+        "classes": "Newfoundland, Newfoundland dog",
+        "idx": 0,
+        "predictions": 0.00022875198919791728
+    },
+    {
+        "classes": "clumber, clumber spaniel",
+        "idx": 0,
+        "predictions": 0.00022826941858511418
+    },
+    {
+        "classes": "jeep, landrover",
+        "idx": 0,
+        "predictions": 0.00022774645185563713
+    },
+    {
+        "classes": "night snake, Hypsiglena torquata",
+        "idx": 0,
+        "predictions": 0.0002254109422210604
+    }
+]
