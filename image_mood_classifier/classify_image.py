@@ -64,6 +64,9 @@ def classifier_train(X, y, method="svc"):
 
     if False:  # experimentation with a keras classifier, disabled for now
         if method=="dnn":
+            # alternate is to use simplified version in scikit
+            # http://scikit-learn.org/stable/auto_examples/neural_networks/plot_mlp_alpha.html#sphx-glr-auto-examples-neural-networks-plot-mlp-alpha-py
+
             from keras.wrappers.scikit_learn import KerasClassifier
 
             # find next multiple of 2 that surpasses input feature length
@@ -91,7 +94,7 @@ def classifier_train(X, y, method="svc"):
     print([classifier, clf.best_params_, clf.best_score_])
 
     # quick report on our own partition
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1, stratify=y)
     classifier.fit(X_train, y_train)
     y_true, y_pred = y_test, classifier.predict(X_test)
     print(classification_report(y_true, y_pred))
@@ -119,7 +122,8 @@ def main(config={}):
     parser.add_argument('-p', '--predict_path', type=str, default='', help="Save predictions from model (model must be provided via 'dump_model')")
     parser.add_argument('-i', '--input', type=str, default='',help='Absolute path to input training data file. (for now must be a header-less CSV)')
     parser.add_argument('-C', '--cuda_env', type=str, default='',help='Anything special to inject into CUDA_VISIBLE_DEVICES environment string')
-    parser.add_argument('-m', '--model_type', help='specify the underlying classifier type (rf (randomforest), svc (SVM))', default='rf')
+    parser.add_argument('-m', '--model_type', type=str, default='rf',help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
+    parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', action='store_true', help='do not create masked samples on input')
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     #pargs, unparsed = parser.parse_known_args()
@@ -146,8 +150,9 @@ def main(config={}):
         formatter = Formatter()
         hotLabel = formatter.learn_class_mapping(rawLabel)
         formatter.learn_input_mapping(rawDf, "classes", "idx", "predictions")
-        print("Converting block of {:} responses into training data, expecting {:} samples...".format(len(rawDf), len(rawLabel)))
-        objRefactor = formatter.transform_raw_sample(rawDf, rawLabel)
+        print("Converting block of {:} responses into training data, utilizing {:} images...".format(len(rawDf), len(rawLabel)))
+        objRefactor = formatter.transform_raw_sample(rawDf, rawLabel, None if config['feature_nomask'] else Formatter.SAMPLE_GENERATE_MASKING)
+        print("Generated {:} total samples (skip-masking: {:})".format(len(objRefactor['values']), config['feature_nomask']))
         clf = None
 
         # train a classifier with refactored data

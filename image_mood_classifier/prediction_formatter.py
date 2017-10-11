@@ -8,6 +8,7 @@ from __future__ import print_function
 
 import numpy as np
 import pandas as pd
+from math import ceil
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.preprocessing import LabelBinarizer
 
@@ -17,8 +18,10 @@ class Formatter(BaseEstimator, ClassifierMixin):
     COL_NAME_IDX = "idx"
     COL_NAME_CLASS = "moods"
     COL_NAME_PREDICTION = "predictions"
+    SAMPLE_GENERATE_MASKING = [0.1, 0.25, 0.5, 1]
 
-    def __init__(self, class_map=None, classifier=None, class_encoder=None, input_columns=None, input_map=None):
+    def __init__(self, class_map=None, classifier=None, class_encoder=None,
+                 input_columns=None, input_map=None, input_softnoise=True):
         """
         Initialize the formatter with a class map
         :param class_map: map of {index:string , ...}
@@ -29,6 +32,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
         self.input_columns = input_columns
         self.input_map = input_map
         self.class_list = None
+        self.input_softnoise = input_softnoise
         #print("SET: {:}".format(self.class_map))
 
     def learn_class_mapping(self, raw_labels):
@@ -47,22 +51,38 @@ class Formatter(BaseEstimator, ClassifierMixin):
         classes = raw_sample[self.input_columns['class']].unique().tolist()
         self.input_map = dict(zip(classes, range(len(classes))))
 
-    def transform_raw_sample(self, raw_sample, raw_labels=None):
+    def transform_raw_sample(self, raw_sample, raw_labels=None, mask_depths=SAMPLE_GENERATE_MASKING):
         """Method to transform raw sample into numpy matrix, according to internal class mapping"""
         if self.input_map is None: return None
+        raw_sample.sort_values([self.input_columns['data']], ascending=False, inplace=True)
         groupSet = raw_sample.groupby(self.input_columns['group'])
         numImages = len(groupSet)
-        npData = np.zeros((numImages, len(self.input_map)))
+        numFeatures = len(self.input_map)
         listFrames = []
         listLabels = []
+        if mask_depths is None:
+            mask_depths = [1]
+        # utilize 10% of mean value as background noise
+        if self.input_softnoise:
+            valMean = raw_sample[self.input_columns['data']].mean()
+            # print("Found mean {:} for samples within incoming features".format(valMean))
+            npData = np.random.random_sample((numImages*len(mask_depths), numFeatures))*valMean*0.1
+        else:
+            npData = np.zeros((numImages*len(mask_depths), numFeatures))
+        idx = 0
         for nameG, rowsG in groupSet:
-            idx = len(listFrames)
-            listFrames.append(nameG)
-            if raw_labels is not None:
-                listLabels.append(raw_labels[idx])
-            # https://stackoverflow.com/questions/7837722/what-is-the-most-efficient-way-to-loop-through-dataframes-with-pandas/34311080#34311080
-            for rowDf in zip(rowsG[self.input_columns['class']], rowsG[self.input_columns['data']]):
-                npData[idx][self.input_map[rowDf[0]]] = rowDf[1]
+            for maskFraction in mask_depths:
+                numNonMasked = min(ceil(maskFraction*numFeatures), numFeatures)
+                listFrames.append(nameG)
+                if raw_labels is not None:
+                    listLabels.append(raw_labels[idx])
+                # https://stackoverflow.com/questions/7837722/what-is-the-most-efficient-way-to-loop-through-dataframes-with-pandas/34311080#34311080
+                idxF = 0
+                for rowDf in zip(rowsG[self.input_columns['class']], rowsG[self.input_columns['data']]):
+                    npData[idx][self.input_map[rowDf[0]]] = rowDf[1]
+                    idxF += 1
+                    if idxF >= numNonMasked: break
+            idx += 1
 
         # if input was a ndarray set, merge them back
         if listLabels and type(listLabels[0])==np.ndarray:
@@ -72,7 +92,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
 
     def get_params(self, deep=False):
         return {'class_map': self.class_map, "classifier": self.classifier, 'class_encoder':self.class_encoder,
-                'input_columns': self.input_columns, 'input_map':self.input_map }
+                'input_columns': self.input_columns, 'input_map':self.input_map, 'input_softnoise':self.input_softnoise }
 
     @property
     def output_types_(self):
@@ -100,7 +120,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
         if self.classifier is None:
             print("Error: No underlying classifier provided, aborting!")
             return None
-        objTransform = self.transform_raw_sample(X, y)
+        objTransform = self.transform_raw_sample(X, y, mask_depths=None)
         #xx = self.classifier.predict(objTransform['values'])
         #print(xx)
         X = np.array(self.classifier.predict_proba(objTransform['values']))

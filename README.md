@@ -33,7 +33,7 @@ script and has the following arguments.
 usage: run_image-mood-classifier_reference.py [-h] [-l LABELS]
                                               [-p PREDICT_PATH] [-i INPUT]
                                               [-C CUDA_ENV] [-m MODEL_TYPE]
-                                              [-a PUSH_ADDRESS]
+                                              [-f] [-a PUSH_ADDRESS]
                                               [-d DUMP_MODEL]
 
 optional arguments:
@@ -53,6 +53,7 @@ optional arguments:
   -m MODEL_TYPE, --model_type MODEL_TYPE
                         specify the underlying classifier type (rf
                         (randomforest), svc (SVM))
+  -f, --feature_nomask  do not create masked samples on input
   -a PUSH_ADDRESS, --push_address PUSH_ADDRESS
                         server address to push the model (e.g.
                         http://localhost:8887/v2/models)
@@ -69,6 +70,12 @@ model and stored in that native format in [features_testImages_artphoto.csv.bz2]
 ./bin/run_local.sh -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
 ```
 
+Add the no-mask flag to speed up training and avoid sample simulation.
+```
+./bin/run_local.sh -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
+```
+
+
 Example for evaluating a set of features from the *image-classification*
 model.
 ```
@@ -79,6 +86,14 @@ model.
 A training analysis of results demonstrates that this problem is not trivial.
 Contrary to the results in the original publication, F1 scores for
 methods in this model are not that high.
+
+After version 0.3, training also generates additional samples form
+feature masking (e.g. missing or zero-based features).  This adds some
+robustness for image-classifier results that have only partial information
+and generally adds importance to the stronger class features as well.
+Some classifiers (for example, deep neural nets (DNN)) can benefit from
+the additional samples, even if they are similar to the original.
+
 ```
 (Random Forest - 300 estimators); the default
              precision    recall  f1-score   support
