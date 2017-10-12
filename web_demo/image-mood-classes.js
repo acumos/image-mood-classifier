@@ -169,9 +169,10 @@ function genClassTable (data, div) {
     if ('results' in data) {
         $.each(data.results.moods, function(k, v) {
             if (count < limit && v.score >= minScore) {
-                var fade = (v.score > 1.0) ? 1 : v.score;	// fade out low confidence classes
+                var fade = v.score+0.25;
+                fade = (fade > 1.0) ? 1 : fade;	// fade out low confidence classes
                 classTable.append($('<tr />').css('opacity', fade)
-                    .append($('<td />').append(v.moods))
+                    .append($('<td />').append(v.mood))
                     .append($('<td />').append(parseFloat(v.score).toFixed(2)))
                     );
                 count++;

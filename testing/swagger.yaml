@@ -25,6 +25,7 @@ paths:
         - $ref: '#/parameters/mime_type'
         - $ref: '#/parameters/image_binary'
         - $ref: '#/parameters/rich_output'
+        - $ref: '#/parameters/native_transform'
       responses:
         200:
           description: Image mood processed
@@ -53,6 +54,13 @@ parameters:
   rich_output:
     name: rich_output
     description: Rich or regular output
+    in: formData
+    type: boolean
+    required: false
+    default: true
+  native_transform:
+    name: native_transform
+    description: Transform to native object between models
     in: formData
     type: boolean
     required: false

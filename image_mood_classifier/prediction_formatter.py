@@ -16,8 +16,8 @@ from sklearn.preprocessing import LabelBinarizer
 class Formatter(BaseEstimator, ClassifierMixin):
     """Format predictions by binding to class names"""
     COL_NAME_IDX = "idx"
-    COL_NAME_CLASS = "moods"
-    COL_NAME_PREDICTION = "predictions"
+    COL_NAME_CLASS = "mood"
+    COL_NAME_PREDICTION = "prediction"
     SAMPLE_GENERATE_MASKING = [0.1, 0.25, 0.5, 1]
 
     def __init__(self, class_map=None, classifier=None, class_encoder=None,

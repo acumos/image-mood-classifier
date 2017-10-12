@@ -19,5 +19,8 @@ moodServer: "http://localhost:8886/transform",
 
 * view the page `image-mood-classes.html` in a Crome or Firefox browser
 * probabilities will be updated on the right side fo the screen
-* you can switch between a few sample videos by clicking on the buttons below the main video player
-* ![example web application classifying tigers video](example_running.jpg "Example web application classifying tigers video") 
+* you can switch between a few sample images or upload your own by clicking on the buttons below the main image window
+
+Example web application with *awe* mood classification
+
+* ![example web application with *awe* mood](example_running.jpg "Example web application classifying tigers video")

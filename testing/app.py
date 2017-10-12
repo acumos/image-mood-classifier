@@ -35,7 +35,7 @@ def generate_output(pred, rich_output, time_ellapse):
 
         # iterate through predictions
         for r in zip(pred[Formatter.COL_NAME_CLASS], pred[Formatter.COL_NAME_PREDICTION], range(len(pred))):
-            retObj['moods'].append({'moods':r[0], 'rank':r[2], 'score':r[1], 'idx':0 })
+            retObj['moods'].append({Formatter.COL_NAME_CLASS:r[0], 'rank':r[2], 'score':r[1], 'idx':0 })
 
         # dump to pretty JSON
         retStr = json.dumps({'results':retObj}, indent=4)
@@ -72,7 +72,7 @@ def transform_features(class_predictions, rich_output=False):
 
 
 #def invoke_method(model_method):
-def transform(mime_type, image_binary, rich_output=False):
+def transform(mime_type, image_binary, rich_output=False, native_transform=False):
     app = current_app
     if app.model_image is None:
         # formulate response
@@ -85,9 +85,13 @@ def transform(mime_type, image_binary, rich_output=False):
     X = pd.DataFrame([['image/jpeg', image_read]], columns=['mime_type', 'binary_stream'])
 
     # note that we keep it in proto format, by not transforming back to native
-    predImageMsg = app.model_image.transform.from_native(X).as_bytes()
-    # final transform DOES use native format as last output,j ust as in python-client/testing/wrap/runner.py example
-    predDf = app.model.transform.from_bytes(predImageMsg).as_native()
+    predImage_out = app.model_image.transform.from_native(X)
+    if native_transform:       # for regression testing
+        print(predImage_out.as_native())
+        predDf = app.model.transform.from_native(predImage_out.as_native()).as_native()
+    else:
+        # final transform DOES use native format as last output,j ust as in python-client/testing/wrap/runner.py example
+        predDf = app.model.transform.from_msg(predImage_out.as_msg()).as_native()
     time_stop = time.clock()
     return generate_output(predDf, (time_stop - time_start), rich_output)
 
