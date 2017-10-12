@@ -75,12 +75,14 @@ Add the no-mask flag to speed up training and avoid sample simulation.
 ./bin/run_local.sh -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
 ```
 
-
 Example for evaluating a set of features from the *image-classification*
 model.
 ```
 ./bin/run_local.sh -i data/example_awe_1.csv -d model -p data/example_mood.csv
 ```
+
+Sample images examples can be found in the [web_demo/images](web_demo/images) directory.
+
 
 ### Performance Analysis
 A training analysis of results demonstrates that this problem is not trivial.
@@ -137,6 +139,6 @@ For the purpose of testing the classifier a few sample images are provided.
 While these images are [approved for commercial use](https://creativecommons.org/licenses/by-nd/2.0/),
 the original author retains all rights.
 
-* ![happy 1](data/example_happy_1.jpg) - [flickr source](https://flic.kr/p/73ZzcE)
-* ![awe 1](data/example_awe_1.jpg) - [flickr source](https://flic.kr/p/RLzkvA)
-* ![excitement 1](data/example_excitement_1.jpg) - [flickr source](https://flic.kr/p/fN8y4d)
+* [happy 1](data/example_happy_1.jpg) - [flickr source](https://flic.kr/p/73ZzcE)
+* [awe 1](data/example_awe_1.jpg) - [flickr source](https://flic.kr/p/RLzkvA)
+* [excitement 1](data/example_excitement_1.jpg) - [flickr source](https://flic.kr/p/fN8y4d)

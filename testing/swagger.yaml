@@ -7,9 +7,9 @@ consumes:
 produces:
   - application/json
 paths:
-  /transform:
+  /transform_features:
     post:
-      operationId: app.transform
+      operationId: app.transform_features
       summary: Post CSV/JSON data for mood determination
       parameters:
         - $ref: '#/parameters/class_predictions'
@@ -17,8 +17,33 @@ paths:
       responses:
         200:
           description: Image mood processed
+  /transform:
+    post:
+      operationId: app.transform
+      summary: Post an image for image mood determination
+      parameters:
+        - $ref: '#/parameters/mime_type'
+        - $ref: '#/parameters/image_binary'
+        - $ref: '#/parameters/rich_output'
+      responses:
+        200:
+          description: Image mood processed
 
 parameters:
+  mime_type:
+    name: mime_type
+    description: Image MimeType
+    in: formData
+    type: string
+    required: true
+    default: 'image/jpeg'
+    # pattern: "^[a-zA-Z0-9-]+$"
+  image_binary:
+    name: image_binary
+    description: Binary image blob
+    in: formData
+    type: file
+    required: true
   class_predictions:
     name: class_predictions
     description: Predicted class data
