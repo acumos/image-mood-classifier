@@ -15,9 +15,9 @@ from sklearn.preprocessing import LabelBinarizer
 
 class Formatter(BaseEstimator, ClassifierMixin):
     """Format predictions by binding to class names"""
-    COL_NAME_IDX = "idx"
-    COL_NAME_CLASS = "mood"
-    COL_NAME_PREDICTION = "prediction"
+    COL_NAME_IDX = "image"
+    COL_NAME_CLASS = "class"
+    COL_NAME_PREDICTION = "score"
     SAMPLE_GENERATE_MASKING = [0.1, 0.25, 0.5, 1]
 
     def __init__(self, class_map=None, classifier=None, class_encoder=None,
@@ -45,7 +45,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
         self.class_map = dict(zip(range(len(self.class_encoder.classes_)), self.class_encoder.classes_))
         return rawLabel
 
-    def learn_input_mapping(self, raw_sample, class_column="classes", group_column="idx", data_column="predictions"):
+    def learn_input_mapping(self, raw_sample, class_column, group_column, data_column):
         """Method to learn class mapping from raw samples """
         self.input_columns = {'class':class_column, 'group':group_column, 'data':data_column}
         classes = raw_sample[self.input_columns['class']].unique().tolist()

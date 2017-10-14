@@ -1,4 +1,4 @@
-idx,classes,predictions
+image,class,score
 0,steel arch bridge,0.43294963240623474
 0,pier,0.3302139341831207
 0,suspension bridge,0.04886658489704132

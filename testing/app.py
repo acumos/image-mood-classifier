@@ -25,7 +25,7 @@ def generate_output(pred, rich_output, time_ellapse):
         # NOTE: This response is specially formatted for the webdemo included with this package.
         #       Alternate forms of a response are viable for any other desired application.
         retObj = {
-            'moods': [],
+            'classes': [],
             'clientfile': 'undefined',
             'info': 'Processed',
             'processingtime': time_ellapse,
@@ -35,7 +35,7 @@ def generate_output(pred, rich_output, time_ellapse):
 
         # iterate through predictions
         for r in zip(pred[Formatter.COL_NAME_CLASS], pred[Formatter.COL_NAME_PREDICTION], range(len(pred))):
-            retObj['moods'].append({Formatter.COL_NAME_CLASS:r[0], 'rank':r[2], 'score':r[1], 'idx':0 })
+            retObj['classes'].append({Formatter.COL_NAME_CLASS:r[0], 'rank':r[2], Formatter.COL_NAME_PREDICTION:r[1], Formatter.COL_NAME_IDX:0 })
 
         # dump to pretty JSON
         retStr = json.dumps({'results':retObj}, indent=4)

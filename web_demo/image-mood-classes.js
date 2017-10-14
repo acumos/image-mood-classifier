@@ -30,7 +30,7 @@ $(document).ready(function() {
 
 	//add text input tweak
 	$("#serverUrl").change(function() {
-	    $(document.body).data('hdparams')['classificationServer'] = $(this).val;
+	    $(document.body).data('hdparams')['classificationServer'] = $(this).val();
         updateLink("serverLink");
 	}).val($(document.body).data('hdparams')['classificationServer'])
 	//set launch link at first
@@ -44,7 +44,6 @@ $(document).ready(function() {
 	    var objImg = $this.children('img')[0];
 	    if (objImg) {
 	        switchImage(objImg.src);
-
 	    }
 	});
 
@@ -53,12 +52,14 @@ $(document).ready(function() {
     imageLoader.addEventListener('change', handleImage, false);
 
     //trigger first click
-    //$("#sourceRibbon div")[0].click();
+    $("#sourceRibbon div")[0].click();
 });
 
 function updateLink(domId) {
     var sPageURL = decodeURIComponent(window.location.search.split('?')[0]);
-    $("#"+domId).attr('href', sPageURL+"?url-image="+$(document.body).data('hdparams')['classificationServer']);
+    var newServer = $(document.body).data('hdparams')['classificationServer'];
+    var sNewUrl = sPageURL+"?url-image="+newServer;
+    $("#"+domId).attr('href', sNewUrl);
 }
 
 function switchImage(imgSrc) {
@@ -91,9 +92,9 @@ function switchImage(imgSrc) {
         canvas.height = img.height * ratio;
         ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
         //document.removeChild(canvasCopy);
+        doPostImage(canvas, '#resultsDiv');
     }
     img.src = imgSrc;  //copy source, let image load
-    doPostImage(canvas, '#resultsDiv');
 }
 
 
@@ -167,12 +168,12 @@ function genClassTable (data, div) {
 				);
 
     if ('results' in data) {
-        $.each(data.results.moods, function(k, v) {
+        $.each(data.results.classes, function(k, v) {
             if (count < limit && v.score >= minScore) {
                 var fade = v.score+0.25;
                 fade = (fade > 1.0) ? 1 : fade;	// fade out low confidence classes
                 classTable.append($('<tr />').css('opacity', fade)
-                    .append($('<td />').append(v.mood))
+                    .append($('<td />').append(v.class))
                     .append($('<td />').append(parseFloat(v.score).toFixed(2)))
                     );
                 count++;
@@ -181,11 +182,11 @@ function genClassTable (data, div) {
     }
     else {  //expecting flat data
         $.each(data, function(i,v) {
-            if (count < limit && v.predictions >= minScore) {
-                var fade = (v.predictions > 1.0) ? 1 : v.predictions;	// fade out low confidence classes
+            if (count < limit && v.score >= minScore) {
+                var fade = (v.score > 1.0) ? 1 : v.score;	// fade out low confidence classes
                 classTable.append($('<tr />').css('opacity', fade)
-                    .append($('<td />').append(v.classes))
-                    .append($('<td />').append(parseFloat(v.predictions).toFixed(2)))
+                    .append($('<td />').append(v.class))
+                    .append($('<td />').append(parseFloat(v.score).toFixed(2)))
                     );
                 count++;
             }

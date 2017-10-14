@@ -21,7 +21,7 @@ from image_mood_classifier._version import MODEL_NAME
 def load_dataset(path_features=None):
     """Load a multi-line dataset from image_classifier data format.  Required columns: idx (int64), classes (string), predictions (double)"""
     if path_features is None:
-        dummySample = {"idx":0, "classes":"toy", "predictions":0.243}
+        dummySample = {Formatter.COL_NAME_IDX:0, Formatter.COL_NAME_CLASS:"toy", Formatter.COL_NAME_PREDICTION:0.243}
         df = pd.DataFrame([dummySample])
         return df.drop([0])   # returns columns + data types
     df = pd.read_csv(path_features)
@@ -123,7 +123,7 @@ def main(config={}):
     parser.add_argument('-i', '--input', type=str, default='',help='Absolute path to input training data file. (for now must be a header-less CSV)')
     parser.add_argument('-C', '--cuda_env', type=str, default='',help='Anything special to inject into CUDA_VISIBLE_DEVICES environment string')
     parser.add_argument('-m', '--model_type', type=str, default='rf',help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
-    parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', action='store_true', help='do not create masked samples on input')
+    parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=True, action='store_false', help='create masked samples on input')
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     #pargs, unparsed = parser.parse_known_args()
@@ -149,7 +149,7 @@ def main(config={}):
         # refactor the raw samples from upstream image classifier
         formatter = Formatter()
         hotLabel = formatter.learn_class_mapping(rawLabel)
-        formatter.learn_input_mapping(rawDf, "classes", "idx", "predictions")
+        formatter.learn_input_mapping(rawDf, "class", "image", "score")
         print("Converting block of {:} responses into training data, utilizing {:} images...".format(len(rawDf), len(rawLabel)))
         objRefactor = formatter.transform_raw_sample(rawDf, rawLabel, None if config['feature_nomask'] else Formatter.SAMPLE_GENERATE_MASKING)
         print("Generated {:} total samples (skip-masking: {:})".format(len(objRefactor['values']), config['feature_nomask']))
