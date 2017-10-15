@@ -23,44 +23,44 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
 ```
 [
     {
-        "predictions": 0.38471859385597784,
-        "idx": 0,
-        "moods": "anger"
+        "score": 0.38471859385597784,
+        "image": 0,
+        "class": "anger"
     },
     {
-        "predictions": 0.34529406287726705,
-        "idx": 0,
-        "moods": "amusement"
+        "score": 0.34529406287726705,
+        "image": 0,
+        "class": "amusement"
     },
     {
-        "predictions": 0.21208616764499122,
-        "idx": 0,
-        "moods": "awe"
+        "score": 0.21208616764499122,
+        "image": 0,
+        "class": "awe"
     },
     {
-        "predictions": 0.018154401154401156,
-        "idx": 0,
-        "moods": "fear"
+        "score": 0.018154401154401156,
+        "image": 0,
+        "class": "fear"
     },
     {
-        "predictions": 0.015951680672268907,
-        "idx": 0,
-        "moods": "excitement"
+        "score": 0.015951680672268907,
+        "image": 0,
+        "class": "excitement"
     },
     {
-        "predictions": 0.008543771043771044,
-        "idx": 0,
-        "moods": "disgust"
+        "score": 0.008543771043771044,
+        "image": 0,
+        "class": "disgust"
     },
     {
-        "predictions": 0.00814814814814815,
-        "idx": 0,
-        "moods": "sad"
+        "score": 0.00814814814814815,
+        "image": 0,
+        "class": "sad"
     },
     {
-        "predictions": 0.0071031746031746034,
-        "idx": 0,
-        "moods": "contentment"
+        "score": 0.0071031746031746034,
+        "image": 0,
+        "class": "contentment"
     }
 ]
 ```
@@ -73,54 +73,54 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
         "status": "Succeeded",
         "info": "Processed",
         "serverfilename": "/dev/null",
-        "moods": [
+        "classes": [
             {
                 "rank": 0,
-                "moods": "anger",
+                "class": "anger",
                 "score": 0.38471859385597784,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 1,
-                "moods": "amusement",
+                "class": "amusement",
                 "score": 0.34529406287726705,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 2,
-                "moods": "awe",
+                "class": "awe",
                 "score": 0.21208616764499122,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 3,
-                "moods": "fear",
+                "class": "fear",
                 "score": 0.018154401154401156,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 4,
-                "moods": "excitement",
+                "class": "excitement",
                 "score": 0.015951680672268907,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 5,
-                "moods": "disgust",
+                "class": "disgust",
                 "score": 0.008543771043771044,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 6,
-                "moods": "sad",
+                "class": "sad",
                 "score": 0.00814814814814815,
-                "idx": 0
+                "image": 0
             },
             {
                 "rank": 7,
-                "moods": "contentment",
+                "class": "contentment",
                 "score": 0.0071031746031746034,
-                "idx": 0
+                "image": 0
             }
         ],
         "processingtime": 0.09553400000000023,
