@@ -1,7 +1,7 @@
 #! python
 # -*- coding: utf-8 -*-
 """
-Wrapper for image emotion classification task 
+Wrapper for image emotion classification task
 """
 
 import os.path
@@ -123,7 +123,8 @@ def main(config={}):
     parser.add_argument('-i', '--input', type=str, default='',help='Absolute path to input training data file. (for now must be a header-less CSV)')
     parser.add_argument('-C', '--cuda_env', type=str, default='',help='Anything special to inject into CUDA_VISIBLE_DEVICES environment string')
     parser.add_argument('-m', '--model_type', type=str, default='rf',help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
-    parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=True, action='store_false', help='create masked samples on input')
+    parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=False, action='store_true', help='create masked samples on input')
+    parser.add_argument('-n', '--add_softnoise', dest='softnoise', default=False, action='store_true', help='do not add soft noise to classification inputs')
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     #pargs, unparsed = parser.parse_known_args()
@@ -143,12 +144,16 @@ def main(config={}):
             print("The target labels '{:}' was not found, please check input arguments.".format(config['labels']))
             sys.exit(-1)
 
-        print("Loading labels to train a new model...")
-        rawLabel = pd.read_csv(config['labels'], header=None, delimiter=",")[0].tolist()
-
         # refactor the raw samples from upstream image classifier
-        formatter = Formatter()
-        hotLabel = formatter.learn_class_mapping(rawLabel)
+        formatter = Formatter(input_softnoise=config['softnoise'])
+
+        print("Loading labels to train a new model...")
+        rawLabel = pd.read_csv(config['labels'], header=None, delimiter=",")
+        if len(rawLabel.columns) != 1:
+            print("Error, not currently programmed to best-of class selection to a singleton.")
+            sys.exit(-1)
+        rawLabel = rawLabel[0].tolist()
+
         formatter.learn_input_mapping(rawDf, "class", "image", "score")
         print("Converting block of {:} responses into training data, utilizing {:} images...".format(len(rawDf), len(rawLabel)))
         objRefactor = formatter.transform_raw_sample(rawDf, rawLabel, None if config['feature_nomask'] else Formatter.SAMPLE_GENERATE_MASKING)
@@ -158,13 +163,13 @@ def main(config={}):
         # train a classifier with refactored data
         # import pickle
         # if not os.path.exists('model_cf.pkl'):
-        #     print("Training a new one...")
-        #     with open("model_cf.pkl", "wb") as f:
-        #         pickle.dump(clf, f)
+        #    print("Training a new one...")
+        #    with open("model_cf.pkl", "wb") as f:
+        #        pickle.dump(clf, f)
         # else:
-        #     print("Loading an old one...")
-        #     with open("model_cf.pkl", "rb") as f:
-        #         clf = pickle.load(f)
+        #    print("Loading an old one...")
+        #    with open("model_cf.pkl", "rb") as f:
+        #        clf = pickle.load(f)
 
         # create pipeline to dump via client library
         if clf is None:
