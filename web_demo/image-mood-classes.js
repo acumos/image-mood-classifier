@@ -3,12 +3,12 @@
 
  Videos or camera are displayed locally and frames are periodically sent to GPU image-net classifier service (developed by Zhu Liu) via http post.
  For webRTC, See: https://gist.github.com/greenido/6238800
- 
+
  D. Gibbon 6/3/15
  D. Gibbon 4/19/17 updated to new getUserMedia api, https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
  D. Gibbon 8/1/17 adapted for Cognita
  */
- 
+
 "use strict";
 
 /**
@@ -131,7 +131,7 @@ function getUrlParameter(sParam) {
  */
 function doPostImage(srcCanvas, dstDiv) {
 	var serviceURL = "";
-	var dataURL = srcCanvas.toDataURL('image/jpeg', 0.5);
+	var dataURL = srcCanvas.toDataURL('image/jpeg', 0.9);
 	var blob = dataURItoBlob(dataURL);
 	var hd = $(document.body).data('hdparams');
 	var fd = new FormData();

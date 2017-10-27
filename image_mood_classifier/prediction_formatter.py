@@ -87,7 +87,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
         # if input was a ndarray set, merge them back
         if listLabels and type(listLabels[0])==np.ndarray:
             listLabels = np.vstack(listLabels)
-        return {'frames':listFrames, 'values':npData, 'labels':listLabels}
+        return {'frames':listFrames, 'values':npData, 'labels':listLabels, 'columns':[c for c in self.input_map]}
 
 
     def get_params(self, deep=False):
