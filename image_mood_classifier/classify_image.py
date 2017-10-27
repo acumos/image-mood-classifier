@@ -18,10 +18,11 @@ from sklearn.metrics import classification_report
 from image_mood_classifier.prediction_formatter import Formatter
 from image_mood_classifier._version import MODEL_NAME
 
+
 def load_dataset(path_features=None):
     """Load a multi-line dataset from image_classifier data format.  Required columns: idx (int64), classes (string), predictions (double)"""
     if path_features is None:
-        dummySample = {Formatter.COL_NAME_IDX:0, Formatter.COL_NAME_CLASS:"toy", Formatter.COL_NAME_PREDICTION:0.243}
+        dummySample = {Formatter.COL_NAME_IDX: 0, Formatter.COL_NAME_CLASS: "toy", Formatter.COL_NAME_PREDICTION: 0.243}
         df = pd.DataFrame([dummySample])
         return df.drop([0])   # returns columns + data types
     df = pd.read_csv(path_features)
@@ -30,7 +31,7 @@ def load_dataset(path_features=None):
 
 def create_keras_model_(unit_size=32, input_size=8, label_size=1):
     from keras.models import Sequential
-    from keras.layers import Dense, Dropout, Activation
+    from keras.layers import Dense, Dropout
     from keras.optimizers import SGD
 
     # https://keras.io/getting-started/sequential-model-guide/
@@ -47,15 +48,16 @@ def create_keras_model_(unit_size=32, input_size=8, label_size=1):
     classifier.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     return classifier
 
+
 def classifier_train(X, y, method="svc"):
     """method == svc, rf, dnn """
-    if method=="rf":
+    if method == "rf":
         classifier = RandomForestClassifier()
         param_grid = [
             {'n_estimators': [10, 100, 300, 500], 'min_samples_split': [2, 10]}
         ]
 
-    elif method=="svc":
+    elif method == "svc":
         classifier = SVC()
         param_grid = [
             {'kernel': ['rbf'], 'gamma': [1e-3, 1e-4], 'C': [1, 10, 100, 1000]},
@@ -63,7 +65,7 @@ def classifier_train(X, y, method="svc"):
         ]
 
     if False:  # experimentation with a keras classifier, disabled for now
-        if method=="dnn":
+        if method == "dnn":
             # alternate is to use simplified version in scikit
             # http://scikit-learn.org/stable/auto_examples/neural_networks/plot_mlp_alpha.html#sphx-glr-auto-examples-neural-networks-plot-mlp-alpha-py
 
@@ -73,7 +75,8 @@ def classifier_train(X, y, method="svc"):
             numInput = X.shape[1]
             numUnit = 2
             numLabel = len(y)
-            while numUnit < numInput: numUnit *= 2
+            while numUnit < numInput:
+                numUnit *= 2
             print("Creating sequential DNN, input {:}, units: {:}".format(numInput, numUnit))
 
             def build_partial():
@@ -105,7 +108,7 @@ def classifier_train(X, y, method="svc"):
 
 
 def model_create_pipeline(formatter, clf):
-    #from sklearn.pipeline import Pipeline
+    # from sklearn.pipeline import Pipeline
     dependent_modules = [pd, np]  # define as dependent libraries
 
     # add classifier
@@ -120,14 +123,15 @@ def main(config={}):
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--labels', type=str, default='', help="Path to label one-column file with one row for each input")
     parser.add_argument('-p', '--predict_path', type=str, default='', help="Save predictions from model (model must be provided via 'dump_model')")
-    parser.add_argument('-i', '--input', type=str, default='',help='Absolute path to input training data file. (for now must be a header-less CSV)')
-    parser.add_argument('-C', '--cuda_env', type=str, default='',help='Anything special to inject into CUDA_VISIBLE_DEVICES environment string')
-    parser.add_argument('-m', '--model_type', type=str, default='rf',help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
+    parser.add_argument('-i', '--input', type=str, default='', help='Absolute path to input training data file. (for now must be a header-less CSV)')
+    parser.add_argument('-C', '--cuda_env', type=str, default='', help='Anything special to inject into CUDA_VISIBLE_DEVICES environment string')
+    parser.add_argument('-m', '--model_type', type=str, default='rf', help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
     parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=False, action='store_true', help='create masked samples on input')
     parser.add_argument('-n', '--add_softnoise', dest='softnoise', default=False, action='store_true', help='do not add soft noise to classification inputs')
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
-    config.update(vars(parser.parse_args()))     #pargs, unparsed = parser.parse_known_args()
+    parser.add_argument('-s', '--summary', type=int, dest='summary', default=0, help='summarize top N image classes are strong for which label class (only in training)')
+    config.update(vars(parser.parse_args()))  # pargs, unparsed = parser.parse_known_args()
 
     if not os.path.exists(config['input']):
         print("The target input '{:}' was not found, please check input arguments.".format(config['input']))
@@ -171,21 +175,33 @@ def main(config={}):
         #    with open("model_cf.pkl", "rb") as f:
         #        clf = pickle.load(f)
 
+        # run summary?
+        if config['summary']:
+            df_combined = pd.DataFrame(objRefactor['values'], columns=objRefactor['columns'])
+            df_combined['_labels'] = objRefactor['labels']
+            groupSet = df_combined.groupby('_labels')
+            for nameG, rowsG in groupSet:
+                df_sum = rowsG.sum(axis=0, numeric_only=True)
+                series_top = df_sum.sort_values(ascending=False)
+                print("Label: '{:}', top {:} classes...".format(nameG, config['summary']))
+                print(series_top[0:config['summary']])
+
         # create pipeline to dump via client library
-        if clf is None:
-            clf = classifier_train(objRefactor['values'], objRefactor['labels'], config['model_type'])
-        pipeline, EXTRA_DEPS = model_create_pipeline(formatter, clf)
+        if config['push_address'] or config['dump_model']:
+            if clf is None:
+                clf = classifier_train(objRefactor['values'], objRefactor['labels'], config['model_type'])
+            pipeline, EXTRA_DEPS = model_create_pipeline(formatter, clf)
 
-        # formulate the pipeline to be used
-        if 'push_address' in config and config['push_address']:
-            from cognita_client.push import push_sklearn_model # push_skkeras_hybrid_model (keras?)
-            print("Pushing new model to '{:}'...".format(config['push_address']))
-            push_sklearn_model(pipeline, rawDf, api=config['push_address'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
+            # formulate the pipeline to be used
+            if config['push_address']:
+                from cognita_client.push import push_sklearn_model  # push_skkeras_hybrid_model (keras?)
+                print("Pushing new model to '{:}'...".format(config['push_address']))
+                push_sklearn_model(pipeline, rawDf, api=config['push_address'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
 
-        if 'dump_model' in config and config['dump_model']:
-            from cognita_client.wrap.dump import dump_sklearn_model # dump_skkeras_hybrid_model (keras?)
-            print("Dumping new model to '{:}'...".format(config['dump_model']))
-            dump_sklearn_model(pipeline, rawDf, config['dump_model'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
+            if config['dump_model']:
+                from cognita_client.wrap.dump import dump_sklearn_model  # dump_skkeras_hybrid_model (keras?)
+                print("Dumping new model to '{:}'...".format(config['dump_model']))
+                dump_sklearn_model(pipeline, rawDf, config['dump_model'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
 
     else:
         if not config['dump_model'] or not os.path.exists(config['dump_model']):
@@ -203,7 +219,8 @@ def main(config={}):
 
         if dfPred is not None:
             print("Predictions:\n{:}".format(dfPred))
-        #print("Certainty is: " + str(preds[0][np.argmax(preds)]))
+        # print("Certainty is: " + str(preds[0][np.argmax(preds)]))
+
 
 if __name__ == '__main__':
     main()
