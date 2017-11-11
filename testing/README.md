@@ -6,13 +6,16 @@ This web demo will launch an application with a swagger page.
 ## Example usage
 
 ```
-$ python app.py
-usage: app.py [-h] [--port PORT] [--modeldir MODELDIR] [--rich_return]
+usage: app.py [-h] [--port PORT] [--modeldir MODELDIR]
+              [--modeldir_image MODELDIR_IMAGE]
 
 optional arguments:
-  -h, --help           show this help message and exit
-  --port PORT          port to launch the simple web server
-  --modeldir MODELDIR  model directory to load dumped artifact
+  -h, --help            show this help message and exit
+  --port PORT           port to launch the simple web server
+  --modeldir MODELDIR   model directory to load dumped image-mood-classifier
+  --modeldir_image MODELDIR_IMAGE
+                        model directory for image classfier
+
 ```
 
 ### Output formats
@@ -25,42 +28,42 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
     {
         "score": 0.38471859385597784,
         "image": 0,
-        "class": "anger"
+        "tag": "anger"
     },
     {
         "score": 0.34529406287726705,
         "image": 0,
-        "class": "amusement"
+        "tag": "amusement"
     },
     {
         "score": 0.21208616764499122,
         "image": 0,
-        "class": "awe"
+        "tag": "awe"
     },
     {
         "score": 0.018154401154401156,
         "image": 0,
-        "class": "fear"
+        "tag": "fear"
     },
     {
         "score": 0.015951680672268907,
         "image": 0,
-        "class": "excitement"
+        "tag": "excitement"
     },
     {
         "score": 0.008543771043771044,
         "image": 0,
-        "class": "disgust"
+        "tag": "disgust"
     },
     {
         "score": 0.00814814814814815,
         "image": 0,
-        "class": "sad"
+        "tag": "sad"
     },
     {
         "score": 0.0071031746031746034,
         "image": 0,
-        "class": "contentment"
+        "tag": "contentment"
     }
 ]
 ```
@@ -73,52 +76,52 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
         "status": "Succeeded",
         "info": "Processed",
         "serverfilename": "/dev/null",
-        "classes": [
+        "tages": [
             {
                 "rank": 0,
-                "class": "anger",
+                "tag": "anger",
                 "score": 0.38471859385597784,
                 "image": 0
             },
             {
                 "rank": 1,
-                "class": "amusement",
+                "tag": "amusement",
                 "score": 0.34529406287726705,
                 "image": 0
             },
             {
                 "rank": 2,
-                "class": "awe",
+                "tag": "awe",
                 "score": 0.21208616764499122,
                 "image": 0
             },
             {
                 "rank": 3,
-                "class": "fear",
+                "tag": "fear",
                 "score": 0.018154401154401156,
                 "image": 0
             },
             {
                 "rank": 4,
-                "class": "excitement",
+                "tag": "excitement",
                 "score": 0.015951680672268907,
                 "image": 0
             },
             {
                 "rank": 5,
-                "class": "disgust",
+                "tag": "disgust",
                 "score": 0.008543771043771044,
                 "image": 0
             },
             {
                 "rank": 6,
-                "class": "sad",
+                "tag": "sad",
                 "score": 0.00814814814814815,
                 "image": 0
             },
             {
                 "rank": 7,
-                "class": "contentment",
+                "tag": "contentment",
                 "score": 0.0071031746031746034,
                 "image": 0
             }
@@ -132,8 +135,15 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
 
 * For a graphical experience, view the swagger-generated UI at [http://localhost:8886/ui].
 * Additionally, a simple command-line utility could be used to post an image
-and mime type to the main interface.
+  and mime type to the main interface.
+
 ```
-curl -F class_predictions=@example_awe_1.csv -F mime_type="text/csv" "http://localhost:8886/transform"
-curl -F class_predictions=@example_awe_1.json -F mime_type="application/json" "http://localhost:8886/transform"
+curl -F tag_scores=@example_awe_1.csv -F mime_type="text/csv" "http://localhost:8886/classify_tags"
+curl -F tag_scores=@example_awe_1.json -F mime_type="application/json" "http://localhost:8886/classify_tags"
+```
+
+* If you have run the example application **with** an image classifier model, you can
+  also submit images and the two models will chained together.
+```
+curl -F image_binary=@example.jpg -F mime_type="image/jpg" "http://localhost:8886/classify"
 ```

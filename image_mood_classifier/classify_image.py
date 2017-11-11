@@ -9,6 +9,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+import sklearn
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
@@ -64,32 +65,6 @@ def classifier_train(X, y, method="svc"):
             {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}
         ]
 
-    if False:  # experimentation with a keras classifier, disabled for now
-        if method == "dnn":
-            # alternate is to use simplified version in scikit
-            # http://scikit-learn.org/stable/auto_examples/neural_networks/plot_mlp_alpha.html#sphx-glr-auto-examples-neural-networks-plot-mlp-alpha-py
-
-            from keras.wrappers.scikit_learn import KerasClassifier
-
-            # find next multiple of 2 that surpasses input feature length
-            numInput = X.shape[1]
-            numUnit = 2
-            numLabel = len(y)
-            while numUnit < numInput:
-                numUnit *= 2
-            print("Creating sequential DNN, input {:}, units: {:}".format(numInput, numUnit))
-
-            def build_partial():
-                return create_keras_model_(numUnit, numInput, numLabel)
-
-            X = X.transpose()
-            y = y.transpose()
-            # https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/
-            classifier = KerasClassifier(build_fn=build_partial, verbose=0)
-            param_grid = [
-                {'batch_size': [10, 40, 100]}, {'epochs': [10, 50, 100]}
-            ]
-
     # always run grid search with above
     clf = GridSearchCV(classifier, param_grid, cv=5, n_jobs=-1, verbose=2)
     clf.fit(X, y)
@@ -108,14 +83,42 @@ def classifier_train(X, y, method="svc"):
 
 
 def model_create_pipeline(formatter, clf):
-    # from sklearn.pipeline import Pipeline
-    dependent_modules = [pd, np]  # define as dependent libraries
+    from acumos.modeling import Model, List, create_namedtuple
+    from acumos.session import Requirements
+    from os import path
 
     # add classifier
     formatter.set_params(classifier=clf)
-    # no other pipeline steps required here...
 
-    return formatter, dependent_modules
+    # basal input is a tuple of tag scores
+    ImageTag = create_namedtuple('ImageTag', [('image', int), ('tag', str), ("score", float)])
+    # however, we wrap those to form a list/set of tags
+    ImageTagSet = List[ImageTag]
+
+    def predict_class(df: ImageTagSet) -> List[ImageTag]:
+        '''Returns an array of float predictions'''
+        return formatter.predict(df)
+
+    # compute path of this package to add it as a dependency
+    package_path = path.dirname(path.realpath(__file__))
+    return Model(classify=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn])
+
+
+def model_archive(clf=None, debugging=False):
+    if not debugging:
+        return None
+    # train a classifier with refactored data
+    import pickle
+    if clf is None:
+        if os.path.exists('model_cf.pkl'):
+            print("DEBUG ARCHIVE: Loading an old model...")
+            with open("model_cf.pkl", "rb") as f:
+                clf = pickle.load(f)
+    elif not os.path.exists('model_cf.pkl'):
+        print("Saving a new model...")
+        with open("DEBUG ARCHIVE: model_cf.pkl", "wb") as f:
+            pickle.dump(clf, f)
+    return clf
 
 
 def main(config={}):
@@ -128,7 +131,8 @@ def main(config={}):
     parser.add_argument('-m', '--model_type', type=str, default='rf', help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
     parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=False, action='store_true', help='create masked samples on input')
     parser.add_argument('-n', '--add_softnoise', dest='softnoise', default=False, action='store_true', help='do not add soft noise to classification inputs')
-    parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
+    parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/upload)', default='')
+    parser.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/auth)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     parser.add_argument('-s', '--summary', type=int, dest='summary', default=0, help='summarize top N image classes are strong for which label class (only in training)')
     config.update(vars(parser.parse_args()))  # pargs, unparsed = parser.parse_known_args()
@@ -158,22 +162,11 @@ def main(config={}):
             sys.exit(-1)
         rawLabel = rawLabel[0].tolist()
 
-        formatter.learn_input_mapping(rawDf, "class", "image", "score")
+        formatter.learn_input_mapping(rawDf, "tag", "image", "score")
         print("Converting block of {:} responses into training data, utilizing {:} images...".format(len(rawDf), len(rawLabel)))
         objRefactor = formatter.transform_raw_sample(rawDf, rawLabel, None if config['feature_nomask'] else Formatter.SAMPLE_GENERATE_MASKING)
         print("Generated {:} total samples (skip-masking: {:})".format(len(objRefactor['values']), config['feature_nomask']))
-        clf = None
-
-        # train a classifier with refactored data
-        # import pickle
-        # if not os.path.exists('model_cf.pkl'):
-        #    print("Training a new one...")
-        #    with open("model_cf.pkl", "wb") as f:
-        #        pickle.dump(clf, f)
-        # else:
-        #    print("Loading an old one...")
-        #    with open("model_cf.pkl", "rb") as f:
-        #        clf = pickle.load(f)
+        clf = model_archive()  # debug helper
 
         # run summary?
         if config['summary']:
@@ -190,18 +183,24 @@ def main(config={}):
         if config['push_address'] or config['dump_model']:
             if clf is None:
                 clf = classifier_train(objRefactor['values'], objRefactor['labels'], config['model_type'])
-            pipeline, EXTRA_DEPS = model_create_pipeline(formatter, clf)
+            model, reqs = model_create_pipeline(formatter, clf)
+            model_archive(clf)  # debug helper
 
             # formulate the pipeline to be used
             if config['push_address']:
-                from cognita_client.push import push_sklearn_model  # push_skkeras_hybrid_model (keras?)
+                from acumos.session import AcumosSession
+                session = AcumosSession(push_api=config['push_address'], auth_api=config['auth_address'])
+                session.push(model, MODEL_NAME, reqs)  # creates ./my-iris.zip
                 print("Pushing new model to '{:}'...".format(config['push_address']))
-                push_sklearn_model(pipeline, rawDf, api=config['push_address'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
 
             if config['dump_model']:
-                from cognita_client.wrap.dump import dump_sklearn_model  # dump_skkeras_hybrid_model (keras?)
+                from acumos.session import AcumosSession
+                from os import makedirs
+                if not os.path.exists(config['dump_model']):
+                    makedirs(config['dump_model'])
                 print("Dumping new model to '{:}'...".format(config['dump_model']))
-                dump_sklearn_model(pipeline, rawDf, config['dump_model'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
+                session = AcumosSession()
+                session.dump(model, MODEL_NAME, config['dump_model'], reqs)  # creates ./my-iris.zip
 
     else:
         if not config['dump_model'] or not os.path.exists(config['dump_model']):
@@ -209,10 +208,12 @@ def main(config={}):
             sys.exit(-1)
 
         print("Attempting predict/transform on input sample...")
-        from cognita_client.wrap.load import load_model
+        from acumos.wrapped import load_model
         model = load_model(config['dump_model'])
-        dfPred = model.transform.from_native(rawDf).as_native()
+        out_wrapped = model.classify.from_native(rawDf).as_wrapped()
 
+        # for now, peel out top sample from classify set
+        dfPred = out_wrapped[0]
         if config['predict_path']:
             print("Writing prediction to file '{:}'...".format(config['predict_path']))
             dfPred.to_csv(config['predict_path'], sep=",", index=False)

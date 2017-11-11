@@ -11,10 +11,9 @@ To utilize this demo...
 
 * confirm that your local instance is configured and running
 * download this directory to your local machine
-  * confirm the host port and classification service URL in the file `image-classes.js`
+  * confirm the host port and classification service URL in the file `image-mood-classes.js`
 ```
-classificationServer: "http://localhost:8885/transform",
-moodServer: "http://localhost:8886/transform",
+classificationServer: "http://localhost:8885/classify",
 ```
 
 * view the page `image-mood-classes.html` in a Crome or Firefox browser

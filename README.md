@@ -67,21 +67,21 @@ Example for training the classifier on the provided dataset. Note, the
 features have already been processed by the *image-classification (v0.3)*
 model and stored in that native format in [features_testImages_artphoto.csv.bz2](data/features_testImages_artphoto.csv.bz2).
 ```
-./bin/run_local.sh -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
+./bin/run_local.sh -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model_large
 ```
 
-Add the no-mask flag to speed up training and avoid sample simulation.
+Add the `no-mask` flag to speed up training and avoid sample simulation.
 ```
-./bin/run_local.sh -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
+./bin/run_local.sh -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model_small
 ```
 
 Example for evaluating a set of features from the *image-classification*
 model.
 ```
-./bin/run_local.sh -i data/example_awe_1.csv -d model -p data/example_mood.csv
+./bin/run_local.sh -i data/example_awe_1.csv -d model_small -p data/example_mood.csv
 ```
 
-Example for printing top contributors (in trainingn data) from *image-classification* to mood label.
+Example for printing top contributors (in training data) from *image-classification* to mood label.
 ```
 ./bin/run_local.sh -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -s 5
 ```
@@ -140,57 +140,57 @@ interesting data observation is the overlap of the class `seashore, coast, seaco
 `excitement`, `awe`, and `contentment`.
 
 * Label: 'amusement', top 5 classes...
-  * ping-pong ball                          3.370771
-  * seashore, coast, seacoast, sea-coast    3.029028
-  * bubble                                  3.007231
-  * balloon                                 2.578175
-  * jean, blue jean, denim                  2.178420
+   * ping-pong ball                          3.370771
+   * seashore, coast, seacoast, sea-coast    3.029028
+   * bubble                                  3.007231
+   * balloon                                 2.578175
+   * jean, blue jean, denim                  2.178420
 * Label: 'anger', top 5 classes...
-  * lipstick, lip rouge    3.039408
-  * mask                   2.279731
-  * volcano                2.021753
-  * wig                    1.857592
-  * hair spray             1.239879
+   * lipstick, lip rouge    3.039408
+   * mask                   2.279731
+   * volcano                2.021753
+   * wig                    1.857592
+   * hair spray             1.239879
 * Label: 'awe', top 5 classes...
-  * seashore, coast, seacoast, sea-coast    7.125516
-  * lakeside, lakeshore                     4.629456
-  * cliff, drop, drop-off                   2.226622
-  * wig                                     1.824174
-  * promontory, headland, head, foreland    1.719891
+   * seashore, coast, seacoast, sea-coast    7.125516
+   * lakeside, lakeshore                     4.629456
+   * cliff, drop, drop-off                   2.226622
+   * wig                                     1.824174
+   * promontory, headland, head, foreland    1.719891
 * Label: 'contentment', top 5 classes...
-  * lakeside, lakeshore                                         13.223093
-  * seashore, coast, seacoast, sea-coast                         5.862702
-  * promontory, headland, head, foreland                         3.135785
-  * breakwater, groin, groyne, mole, bulwark, seawall, jetty     2.120798
-  * dock, dockage, docking facility                              1.984274
+   * lakeside, lakeshore                                         13.223093
+   * seashore, coast, seacoast, sea-coast                         5.862702
+   * promontory, headland, head, foreland                         3.135785
+   * breakwater, groin, groyne, mole, bulwark, seawall, jetty     2.120798
+   * dock, dockage, docking facility                              1.984274
 * Label: 'disgust', top 5 classes...
-  * lipstick, lip rouge                                       4.465127
-  * mask                                                      2.138739
-  * syringe                                                   1.250971
-  * tick                                                      1.146299
-  * chiton, coat-of-mail shell, sea cradle, polyplacophore    1.090373
+   * lipstick, lip rouge                                       4.465127
+   * mask                                                      2.138739
+   * syringe                                                   1.250971
+   * tick                                                      1.146299
+   * chiton, coat-of-mail shell, sea cradle, polyplacophore    1.090373
 * Label: 'excitement', top 5 classes...
-  * seashore, coast, seacoast, sea-coast    4.996619
-  * daisy                                   3.273973
-  * balloon                                 2.951615
-  * parachute, chute                        2.012220
-  * rapeseed                                1.879177
+   * seashore, coast, seacoast, sea-coast    4.996619
+   * daisy                                   3.273973
+   * balloon                                 2.951615
+   * parachute, chute                        2.012220
+   * rapeseed                                1.879177
 * Label: 'fear', top 5 classes...
-  * mask                               4.021418
-  * Band Aid                           3.958322
-  * bathtub, bathing tub, bath, tub    3.057594
-  * lipstick, lip rouge                2.948846
-  * gasmask, respirator, gas helmet    2.775581
+   * mask                               4.021418
+   * Band Aid                           3.958322
+   * bathtub, bathing tub, bath, tub    3.057594
+   * lipstick, lip rouge                2.948846
+   * gasmask, respirator, gas helmet    2.775581
 * Label: 'sad', top 5 classes...
-  * lakeside, lakeshore    6.440269
-  * swing                  4.254950
-  * daisy                  3.841010
-  * mask                   3.803346
-  * park bench             3.333210
+   * lakeside, lakeshore    6.440269
+   * swing                  4.254950
+   * daisy                  3.841010
+   * mask                   3.803346
+   * park bench             3.333210
 
 
 # Example Interface
-An instance should first be built and downloaded from Cognita and then
+An instance should first be built and downloaded from Acumos and then
 launched locally.  Afterwards, the sample application found in
 [web_demo](web_demo) uses a `localhost` service to classify
 and visualize the results of image classification.

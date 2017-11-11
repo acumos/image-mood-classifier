@@ -16,7 +16,7 @@ from sklearn.preprocessing import LabelBinarizer
 class Formatter(BaseEstimator, ClassifierMixin):
     """Format predictions by binding to class names"""
     COL_NAME_IDX = "image"
-    COL_NAME_CLASS = "class"
+    COL_NAME_CLASS = "tag"
     COL_NAME_PREDICTION = "score"
     SAMPLE_GENERATE_MASKING = [0.1, 0.25, 0.5, 1]
 
@@ -47,8 +47,8 @@ class Formatter(BaseEstimator, ClassifierMixin):
 
     def learn_input_mapping(self, raw_sample, class_column, group_column, data_column):
         """Method to learn class mapping from raw samples """
-        self.input_columns = {'class': class_column, 'group': group_column, 'data': data_column}
-        classes = raw_sample[self.input_columns['class']].unique().tolist()
+        self.input_columns = {'tag': class_column, 'group': group_column, 'data': data_column}
+        classes = raw_sample[self.input_columns['tag']].unique().tolist()
         self.input_map = dict(zip(classes, range(len(classes))))
 
     def transform_raw_sample(self, raw_sample, raw_labels=None, mask_depths=SAMPLE_GENERATE_MASKING):
@@ -79,7 +79,7 @@ class Formatter(BaseEstimator, ClassifierMixin):
                     listLabels.append(raw_labels[idx])
                 # https://stackoverflow.com/questions/7837722/what-is-the-most-efficient-way-to-loop-through-dataframes-with-pandas/34311080#34311080
                 idxF = 0
-                for rowDf in zip(rowsG[self.input_columns['class']], rowsG[self.input_columns['data']]):
+                for rowDf in zip(rowsG[self.input_columns['tag']], rowsG[self.input_columns['data']]):
                     npData[idx][self.input_map[rowDf[0]]] = rowDf[1]
                     idxF += 1
                     if idxF >= numNonMasked:

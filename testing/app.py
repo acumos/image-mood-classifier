@@ -6,10 +6,10 @@ import argparse
 import json
 import time
 
-from flask import Flask, request, current_app, make_response
-
+from flask import current_app, make_response
 import pandas as pd
-import requests
+
+from acumos.wrapped import load_model
 
 import sys
 if sys.version_info[0] < 3:
@@ -17,8 +17,6 @@ if sys.version_info[0] < 3:
 else:
     from io import StringIO
 
-from cognita_client.wrap.load import load_model
-from image_mood_classifier.prediction_formatter import Formatter
 
 def generate_output(pred, rich_output, time_ellapse):
     if rich_output:
@@ -34,28 +32,30 @@ def generate_output(pred, rich_output, time_ellapse):
         }
 
         # iterate through predictions
-        for r in zip(pred[Formatter.COL_NAME_CLASS], pred[Formatter.COL_NAME_PREDICTION], range(len(pred))):
-            retObj['classes'].append({Formatter.COL_NAME_CLASS:r[0], 'rank':r[2], Formatter.COL_NAME_PREDICTION:r[1], Formatter.COL_NAME_IDX:0 })
+        pred['rank'] = list(pred.index)
+        pred['rank'] = pred['rank'] + 1
+        retObj['tags'] = pred.to_dict(orient='records')
 
         # dump to pretty JSON
-        retStr = json.dumps({'results':retObj}, indent=4)
+        retStr = json.dumps({'results': retObj}, indent=4)
     else:
         retStr = json.dumps(pred.to_dict(orient='records'), indent=4)
 
     # formulate response
-    resp = make_response((retStr, 200, { } ))
+    resp = make_response((retStr, 200, {}))
     # allow 'localhost' from 'file' or other;
     # NOTE: DO NOT USE IN PRODUCTION!!!
     resp.headers['Access-Control-Allow-Origin'] = '*'
     print(type(pred))
-    print(retStr[:min(200,len(retStr))])
-    #print(pred)
+    print(retStr[:min(200, len(retStr))])
+    # print(pred)
     return resp
 
-def transform_features(class_predictions, rich_output=False):
+
+def classify_tags(tag_scores, rich_output=False):
     app = current_app
     time_start = time.clock()
-    str_predictions = class_predictions.stream.read().decode()
+    str_predictions = tag_scores.stream.read().decode()
 
     # first pass is attempting to parse CSV
     try:
@@ -64,15 +64,17 @@ def transform_features(class_predictions, rich_output=False):
     except ValueError as e:
         class_predictions = StringIO(str_predictions)
         X = pd.read_csv(class_predictions)
-    #print(X)
 
-    pred = app.model.transform.from_native(X).as_native()
+    pred = app.model_mood.classify.from_native(X).as_wrapped()
+    # for now, peel off single sample
+    if pred is not None:
+        pred = pred[0]
     time_stop = time.clock()
-    return generate_output(pred, (time_stop - time_start), rich_output)
+    return generate_output(pred, rich_output, (time_stop - time_start), )
 
 
-#def invoke_method(model_method):
-def transform(mime_type, image_binary, rich_output=False, native_transform=False):
+def classify_image(mime_type, image_binary, rich_output=False, native_transform=False):
+    '''Consumes and produces protobuf binary data'''
     app = current_app
     if app.model_image is None:
         # formulate response
@@ -82,18 +84,27 @@ def transform(mime_type, image_binary, rich_output=False, native_transform=False
 
     time_start = time.clock()
     image_read = image_binary.stream.read()
-    X = pd.DataFrame([['image/jpeg', image_read]], columns=['mime_type', 'binary_stream'])
+    X = pd.DataFrame([['image/jpeg', image_read]], columns=['mime_type', 'image_binary'])
 
     # note that we keep it in proto format, by not transforming back to native
-    predImage_out = app.model_image.transform.from_native(X)
+    predImage_out = app.model_image.classify.from_native(X)
     if native_transform:       # for regression testing
-        print(predImage_out.as_native())
-        predDf = app.model.transform.from_native(predImage_out.as_native()).as_native()
-    else:
         # final transform DOES use native format as last output,j ust as in python-client/testing/wrap/runner.py example
-        predDf = app.model.transform.from_msg(predImage_out.as_msg()).as_native()
+        print("translate preview: ")
+        print(predImage_out)
+        print("translate preview (as wrapped): ")
+        print(predImage_out.as_wrapped())
+        predMood_out = app.model_mood.classify.from_pb_msg(predImage_out.as_pb_msg())
+    else:
+        # print(predImage_out.as_wrapped())
+        predMood_out = app.model_mood.classify.from_wrapped(predImage_out.as_wrapped())
+
+    predDf = predMood_out.as_wrapped()  # convert to wrapped/python tuple
+    # for now, peel off single sample
+    if predDf is not None:
+        predDf = predDf[0]
     time_stop = time.clock()
-    return generate_output(predDf, (time_stop - time_start), rich_output)
+    return generate_output(predDf, rich_output, (time_stop - time_start))
 
 
 if __name__ == '__main__':
@@ -107,23 +118,17 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     app = connexion.App(__name__)
     app.add_api('swagger.yaml')
+
     # example usage:
-    #     curl -F image_binary=@test.jpg -F mime_type="image/jpeg" "http://localhost:8885/transform"
+    #     curl -F image_binary=@test.jpg -F mime_type="image/jpeg" "http://localhost:8885/classify_image"
 
     print("Loading model... {:}".format(pargs.modeldir))
-    app.app.model = load_model(pargs.modeldir)  # refers to ./model dir in pwd. generated by helper script also in this dir
+    app.app.model_mood = load_model(pargs.modeldir)  # refers to ./model dir in pwd. generated by helper script also in this dir
 
     app.app.model_image = None
     if pargs.modeldir_image:
         print("Loading image classifier model... {:}".format(pargs.modeldir_image))
         app.app.model_image = load_model(pargs.modeldir_image)  # refers to ./model dir in pwd. generated by helper script also in this dir
 
-    # # dynamically add handlers depending on model capabilities
-    # for method_name, method in model.methods.items():
-    #     url = "/{}".format(method_name)
-    #     print("Adding route {}".format(url))
-    #     handler = partial(invoke_method, model_method=method)
-    #     app.add_url_rule(url, method_name, handler, methods=['POST'])
-
     # run our standalone gevent server
-    app.run(port=pargs.port) #, server='gevent')
+    app.run(port=pargs.port)
