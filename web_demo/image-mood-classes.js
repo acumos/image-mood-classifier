@@ -17,7 +17,7 @@
 $(document).ready(function() {
     var urlDefault = getUrlParameter('url-image');
     if (!urlDefault)
-        urlDefault = "http://localhost:8886/transform";
+        urlDefault = "http://localhost:8886/classify";
 
 	$(document.body).data('hdparams', {	// store global vars in the body element
 		classificationServer: urlDefault,
@@ -168,12 +168,12 @@ function genClassTable (data, div) {
 				);
 
     if ('results' in data) {
-        $.each(data.results.classes, function(k, v) {
+        $.each(data.results.tags, function(k, v) {
             if (count < limit && v.score >= minScore) {
                 var fade = v.score+0.25;
                 fade = (fade > 1.0) ? 1 : fade;	// fade out low confidence classes
                 classTable.append($('<tr />').css('opacity', fade)
-                    .append($('<td />').append(v.class))
+                    .append($('<td />').append(v.tag))
                     .append($('<td />').append(parseFloat(v.score).toFixed(2)))
                     );
                 count++;
@@ -185,7 +185,7 @@ function genClassTable (data, div) {
             if (count < limit && v.score >= minScore) {
                 var fade = (v.score > 1.0) ? 1 : v.score;	// fade out low confidence classes
                 classTable.append($('<tr />').css('opacity', fade)
-                    .append($('<td />').append(v.class))
+                    .append($('<td />').append(v.tag))
                     .append($('<td />').append(parseFloat(v.score).toFixed(2)))
                     );
                 count++;

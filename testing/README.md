@@ -138,12 +138,12 @@ The optional HTTP parameter `rich_output` will generate a more decorated JSON ou
   and mime type to the main interface.
 
 ```
-curl -F class_predictions=@example_awe_1.csv -F mime_type="text/csv" "http://localhost:8886/classify_tags"
-curl -F class_predictions=@example_awe_1.json -F mime_type="application/json" "http://localhost:8886/classify_tags"
+curl -F tag_scores=@example_awe_1.csv -F mime_type="text/csv" "http://localhost:8886/classify_tags"
+curl -F tag_scores=@example_awe_1.json -F mime_type="application/json" "http://localhost:8886/classify_tags"
 ```
 
 * If you have run the example application **with** an image classifier model, you can
   also submit images and the two models will chained together.
 ```
-curl -F class_predictions=@example.jpg -F mime_type="image/jpg" "http://localhost:8886/classify_image"
+curl -F image_binary=@example.jpg -F mime_type="image/jpg" "http://localhost:8886/classify"
 ```

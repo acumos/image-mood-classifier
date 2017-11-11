@@ -90,6 +90,10 @@ def classify_image(mime_type, image_binary, rich_output=False, native_transform=
     predImage_out = app.model_image.classify.from_native(X)
     if native_transform:       # for regression testing
         # final transform DOES use native format as last output,j ust as in python-client/testing/wrap/runner.py example
+        print("translate preview: ")
+        print(predImage_out)
+        print("translate preview (as wrapped): ")
+        print(predImage_out.as_wrapped())
         predMood_out = app.model_mood.classify.from_pb_msg(predImage_out.as_pb_msg())
     else:
         # print(predImage_out.as_wrapped())
