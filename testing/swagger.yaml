@@ -1,25 +1,25 @@
 swagger: '2.0'
 info:
   title: Image Mood Classifier Example
-  version: "0.2"
+  version: "0.3"
 consumes:
   - application/json
 produces:
   - application/json
 paths:
-  /transform_features:
+  /classify_tags:
     post:
-      operationId: app.transform_features
+      operationId: app.classify_tags
       summary: Post CSV/JSON data for mood determination
       parameters:
-        - $ref: '#/parameters/class_predictions'
+        - $ref: '#/parameters/tag_scores'
         - $ref: '#/parameters/rich_output'
       responses:
         200:
           description: Image mood processed
-  /transform:
+  /classify_image:
     post:
-      operationId: app.transform
+      operationId: app.classify_image
       summary: Post an image for image mood determination
       parameters:
         - $ref: '#/parameters/mime_type'
@@ -45,9 +45,9 @@ parameters:
     in: formData
     type: file
     required: true
-  class_predictions:
-    name: class_predictions
-    description: Predicted class data
+  tag_scores:
+    name: tag_scores
+    description: Predicted tag scores
     in: formData
     type: file
     required: true
