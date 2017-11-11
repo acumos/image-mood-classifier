@@ -190,7 +190,7 @@ interesting data observation is the overlap of the class `seashore, coast, seaco
 
 
 # Example Interface
-An instance should first be built and downloaded from Cognita and then
+An instance should first be built and downloaded from Acumos and then
 launched locally.  Afterwards, the sample application found in
 [web_demo](web_demo) uses a `localhost` service to classify
 and visualize the results of image classification.
