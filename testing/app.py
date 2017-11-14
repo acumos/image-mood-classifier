@@ -68,7 +68,7 @@ def classify_tags(tag_scores, rich_output=False):
     pred = app.model_mood.classify.from_native(X).as_wrapped()
     # for now, peel off single sample
     if pred is not None:
-        pred = pred[0]
+        pred = pd.DataFrame(pred[0])
     time_stop = time.clock()
     return generate_output(pred, rich_output, (time_stop - time_start), )
 
@@ -102,7 +102,7 @@ def classify_image(mime_type, image_binary, rich_output=False, native_transform=
     predDf = predMood_out.as_wrapped()  # convert to wrapped/python tuple
     # for now, peel off single sample
     if predDf is not None:
-        predDf = predDf[0]
+        predDf = pd.DataFrame(predDf[0])
     time_stop = time.clock()
     return generate_output(predDf, rich_output, (time_stop - time_start))
 

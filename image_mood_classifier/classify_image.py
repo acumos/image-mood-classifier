@@ -95,16 +95,22 @@ def model_create_pipeline(formatter, clf):
     # however, we wrap those to form a list/set of tags
     ImageTagSet = List[ImageTag]
 
-    def predict_class(df: ImageTagSet) -> List[ImageTag]:
+    def predict_class(value: ImageTagSet) -> List[ImageTag]:
         '''Returns an array of float predictions'''
-        return formatter.predict(df)
+        if type(value) == pd.DataFrame:
+            df = value
+        else:
+            df = pd.DataFrame(value)
+        tags_df = formatter.predict(df)
+        tags_list = [ImageTag(*row) for row in tags_df.values]  # iterate over rows and unpack row into ImageTag
+        return tags_list
 
     # compute path of this package to add it as a dependency
     package_path = path.dirname(path.realpath(__file__))
     return Model(classify=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn])
 
 
-def model_archive(clf=None, debugging=False):
+def model_archive(clf=None, debugging=True):
     if not debugging:
         return None
     # train a classifier with refactored data
@@ -213,7 +219,7 @@ def main(config={}):
         out_wrapped = model.classify.from_native(rawDf).as_wrapped()
 
         # for now, peel out top sample from classify set
-        dfPred = out_wrapped[0]
+        dfPred = pd.DataFrame(out_wrapped[0])
         if config['predict_path']:
             print("Writing prediction to file '{:}'...".format(config['predict_path']))
             dfPred.to_csv(config['predict_path'], sep=",", index=False)
