@@ -110,7 +110,7 @@ def model_create_pipeline(formatter, clf):
     return Model(classify=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn])
 
 
-def model_archive(clf=None, debugging=True):
+def model_archive(clf=None, debugging=False):
     if not debugging:
         return None
     # train a classifier with refactored data
