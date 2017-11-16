@@ -90,19 +90,20 @@ def model_create_pipeline(formatter, clf):
     # add classifier
     formatter.set_params(classifier=clf)
 
-    # basal input is a tuple of tag scores
-    ImageTag = create_namedtuple('ImageTag', [('image', int), ('tag', str), ("score", float)])
-    # however, we wrap those to form a list/set of tags
-    ImageTagSet = List[ImageTag]
+    # create a dataframe and image set
+    # ImageSet = create_dataframe("ImageSet", ImageDecoder.generate_input_dataframe())
+    # TODO: replace with more friendly dataframe operation when it supoprts strings...
+    tag_type = []
+    for item in formatter.output_types_:
+        for k in item:
+            tag_type.append((k, List[item[k]]))
+    ImageTagSet = create_namedtuple("ImageTagSet", tag_type)
 
-    def predict_class(value: ImageTagSet) -> List[ImageTag]:
+    def predict_class(value: ImageTagSet) -> ImageTagSet:
         '''Returns an array of float predictions'''
-        if type(value) == pd.DataFrame:
-            df = value
-        else:
-            df = pd.DataFrame(value)
+        df = pd.DataFrame(np.column_stack(value), columns=value._fields)
         tags_df = formatter.predict(df)
-        tags_list = [ImageTag(*row) for row in tags_df.values]  # iterate over rows and unpack row into ImageTag
+        tags_list = ImageTagSet(*(col for col in tags_df.values.T))  # flatten to tag set
         return tags_list
 
     # compute path of this package to add it as a dependency
@@ -216,7 +217,10 @@ def main(config={}):
         print("Attempting predict/transform on input sample...")
         from acumos.wrapped import load_model
         model = load_model(config['dump_model'])
-        out_wrapped = model.classify.from_native(rawDf).as_wrapped()
+
+        type_in = model.classify._input_type
+        classify_in = type_in(*tuple(col for col in rawDf.values.T))
+        out_wrapped = model.classify.from_wrapped(classify_in).as_wrapped()
 
         # for now, peel out top sample from classify set
         dfPred = pd.DataFrame(out_wrapped[0])
