@@ -8,6 +8,7 @@ import time
 
 from flask import current_app, make_response
 import pandas as pd
+import numpy as np
 
 from acumos.wrapped import load_model
 
@@ -65,10 +66,12 @@ def classify_tags(tag_scores, rich_output=False):
         class_predictions = StringIO(str_predictions)
         X = pd.read_csv(class_predictions)
 
-    pred = app.model_mood.classify.from_native(X).as_wrapped()
+    type_in = app.model_mood.classify._input_type
+    classify_in = type_in(*tuple(col for col in X.values.T))
+    pred_wrap = app.model_mood.classify.from_wrapped(classify_in).as_wrapped()
+    pred = pd.DataFrame(np.column_stack(pred_wrap), columns=pred_wrap._fields)
+
     # for now, peel off single sample
-    if pred is not None:
-        pred = pred[0]
     time_stop = time.clock()
     return generate_output(pred, rich_output, (time_stop - time_start), )
 
@@ -85,26 +88,25 @@ def classify_image(mime_type, image_binary, rich_output=False, native_transform=
     time_start = time.clock()
     image_read = image_binary.stream.read()
     X = pd.DataFrame([['image/jpeg', image_read]], columns=['mime_type', 'image_binary'])
+    type_in = app.model_image.classify._input_type
+    classify_in = type_in(*tuple(col for col in X.values.T))
 
     # note that we keep it in proto format, by not transforming back to native
-    predImage_out = app.model_image.classify.from_native(X)
+    predImage_out = app.model_image.classify.from_wrapped(classify_in)
     if native_transform:       # for regression testing
         # final transform DOES use native format as last output,j ust as in python-client/testing/wrap/runner.py example
-        print("translate preview: ")
-        print(predImage_out)
-        print("translate preview (as wrapped): ")
-        print(predImage_out.as_wrapped())
-        predMood_out = app.model_mood.classify.from_pb_msg(predImage_out.as_pb_msg())
+        # print("translate preview: ")
+        # print(predImage_out)
+        # print("translate preview (as wrapped): ")
+        # print(predImage_out.as_wrapped())
+        predMood_out = app.model_mood.classify.from_pb_msg(predImage_out.as_pb_msg()).as_wrapped()
     else:
         # print(predImage_out.as_wrapped())
-        predMood_out = app.model_mood.classify.from_wrapped(predImage_out.as_wrapped())
+        predMood_out = app.model_mood.classify.from_wrapped(predImage_out.as_wrapped()).as_wrapped()
 
-    predDf = predMood_out.as_wrapped()  # convert to wrapped/python tuple
-    # for now, peel off single sample
-    if predDf is not None:
-        predDf = predDf[0]
+    pred = pd.DataFrame(np.column_stack(predMood_out), columns=predMood_out._fields)
     time_stop = time.clock()
-    return generate_output(predDf, rich_output, (time_stop - time_start))
+    return generate_output(pred, rich_output, (time_stop - time_start))
 
 
 if __name__ == '__main__':
