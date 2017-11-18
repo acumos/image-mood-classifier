@@ -8,7 +8,10 @@ The experimental motivation and training data comes from
 the "art photos" from this [academic work](https://dl.acm.org/citation.cfm?id=1873965)
 also posted on the authors' [publication website](http://www.imageemotion.org/):
 
-    Jana Machajdik and Allan Hanbury. 2010. *Affective image classification using features inspired by psychology and art theory*. In Proceedings of the 18th ACM international conference on Multimedia (MM '10). ACM, New York, NY, USA, 83-92. DOI: https://doi.org/10.1145/1873951.1873965
+    Jana Machajdik and Allan Hanbury. 2010. *Affective image classification using features
+    inspired by psychology and art theory*. In Proceedings of the 18th ACM international
+    conference on Multimedia (MM '10). ACM, New York, NY, USA, 83-92.
+    DOI: https://doi.org/10.1145/1873951.1873965
 
 Specifically, the example images for this dataset are [available here](http://www.imageemotion.org/testImages_artphoto.zip).
 A handful of these images is also available in the [samples](data/samples) directory.
