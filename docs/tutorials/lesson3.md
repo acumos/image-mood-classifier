@@ -1,4 +1,4 @@
-# Image Mood Classifier Example
+# Web Demo
 This web page sample allows the user to submit an image to
 an image classification and image mood classification service
 in serial progression.
@@ -20,7 +20,7 @@ or simply update the primary classification URL on the page itself during runtim
 * download this directory to your local machine
   * confirm the host port and classification service URL in the file `image-mood-classes.js`
 ```
-classificationServer: "http://localhost:8885/classify",
+classificationServer: "http://localhost:8886/classify",
 ```
 
 * view the page `image-mood-classes.html` in a Crome or Firefox browser
