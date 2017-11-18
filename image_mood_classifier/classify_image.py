@@ -16,12 +16,10 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-from image_mood_classifier.prediction_formatter import Formatter
-from image_mood_classifier._version import MODEL_NAME
-
 
 def load_dataset(path_features=None):
     """Load a multi-line dataset from image_classifier data format.  Required columns: idx (int64), classes (string), predictions (double)"""
+    from image_mood_classifier.prediction_formatter import Formatter
     if path_features is None:
         dummySample = {Formatter.COL_NAME_IDX: 0, Formatter.COL_NAME_CLASS: "toy", Formatter.COL_NAME_PREDICTION: 0.243}
         df = pd.DataFrame([dummySample])
@@ -130,6 +128,9 @@ def model_archive(clf=None, debugging=False):
 
 def main(config={}):
     import argparse
+    from image_mood_classifier.prediction_formatter import Formatter
+    from image_mood_classifier._version import MODEL_NAME
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--labels', type=str, default='', help="Path to label one-column file with one row for each input")
     parser.add_argument('-p', '--predict_path', type=str, default='', help="Save predictions from model (model must be provided via 'dump_model')")
@@ -234,4 +235,8 @@ def main(config={}):
 
 
 if __name__ == '__main__':
+    # patch the path to include this object
+    pathRoot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if pathRoot not in sys.path:
+        sys.path.append(pathRoot)
     main()
