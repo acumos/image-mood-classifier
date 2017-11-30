@@ -33,6 +33,10 @@ your local environment, execute the command below.
 ```
 pip install -r requirments.txt
 ```
+or, if depednencies woudl be better managed by a place-holder package...
+```
+pip install .
+```
 
 **Note:** If you are using an [anaconda-based environment](https://anaconda.org),
 you may want to try
