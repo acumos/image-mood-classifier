@@ -2,10 +2,7 @@
 
 # core deployment packages
 acumos
+pandas
 numpy
+scipy
 sklearn
-
-# testing packages
-connexion
-# pytest
-# pexpect
