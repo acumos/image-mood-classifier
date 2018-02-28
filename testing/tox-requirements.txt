@@ -1,0 +1,12 @@
+# requirements for deployment AND testing
+
+# core deployment packages
+# acumos -- hold off on requirement until valid public release
+numpy
+pandas
+scipy
+sklearn
+
+# testing packages
+pytest
+connexion

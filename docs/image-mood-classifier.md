@@ -109,3 +109,7 @@ Please consult the [tutorials](tutorials) dirctory for usage examples.
 # Release Notes
 The [release notes](release-notes.md) catalog additions and modifications
 over various version changes.
+
+# Metadata Examples
+* [example catalog image](catalog_image.png) - [url source](http://www.imageemotion.org/)
+
