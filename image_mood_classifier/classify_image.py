@@ -116,7 +116,7 @@ def model_create_pipeline(formatter, clf):
 
     def predict_class(wrapped_tagset: ImageTagSet) -> ImageTagSet:
         '''Returns an array of float predictions'''
-        df = pd.DataFrame(np.column_stack(wrapped_tagset), columns=wrapped_tagset._fields)
+        df = pd.DataFrame(list(zip(*wrapped_tagset)), columns=wrapped_tagset._fields)
         tags_df = formatter.predict(df)
         tags_list = ImageTagSet(*(col for col in tags_df.values.T))  # flatten to tag set
         return tags_list

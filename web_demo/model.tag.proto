@@ -1,0 +1,12 @@
+syntax = "proto3";
+package USdJIcOQiGLiZLfBnxcOzsGXRYeIewQs;
+
+service Model {
+  rpc classify (ImageTagSet) returns (ImageTagSet);
+}
+
+message ImageTagSet {
+  repeated int64 image = 1;
+  repeated string tag = 2;
+  repeated double score = 3;
+}

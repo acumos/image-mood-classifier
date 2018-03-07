@@ -165,3 +165,17 @@ curl -F tag_scores=@example_awe_1.json -F mime_type="application/json" "http://l
 ```
 curl -F image_binary=@example.jpg -F mime_type="image/jpg" "http://localhost:8886/classify"
 ```
+
+# Direct use of the model-runner
+
+One simple testing mode is to simulate the output of an Acumos model runner.
+This model runner can be locally duplicated by using the primary python library
+`acumos-python-client`.  This execution usage is experimental, but the APIs should
+be consistent for use.
+
+```
+python acumos-python-client/testing/wrap/runner.py  --port 8886 --modeldir model/
+```
+
+The above command uses the testing-based model runner to launch a singular model
+that responds on a single port in native `protobuf` format.

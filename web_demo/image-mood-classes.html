@@ -8,6 +8,7 @@ Rewrite to utilize simple image-based processing steps.
 <head>
 <title>Image Mood Classification</title>
 <link rel="stylesheet" type="text/css" href="image-mood-classes.css" />
+<script type="text/javascript" src="protobuf/protobuf.min.js"></script>
 <script type="text/javascript" src="thumbnailer.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="image-mood-classes.js"></script>
@@ -47,10 +48,20 @@ Rewrite to utilize simple image-based processing steps.
         outside of this context.</em>
     </span>
 
-<hr  />
+<hr />
 <form action="javascript:void(0);">
-    <label for="serverUrl">Transform URL:</label><input type="text" name="serverUrl" id="serverUrl" size="60" />
-    <br /><span class="tiny"><strong>PRO TIP:</strong>Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span>
+<table class="tableConfig">
+    <tr><td><label for="serverUrl">Transform URL:</label></td>
+        <td><input type="text" name="serverUrl" id="serverUrl" size="60" />
+        <br /><span class="tiny"><em>Note: The endpoint url may be modified when a new method below is utilized.</em></span></td></tr>
+    <tr><td><label for="protoMethod">Protobuf Method:</label></td>
+        <td><select name="protoMethod" id="protoMethod" ><option value="">(disabled, not loaded)</option></select></td></tr>
+    <tr><td><label for="protoButton">Protobuf Message:</label></td>
+        <td><button type="button" name="protoInput" id="protoInput" >Download Encoded Input</button> -
+        <button type="button" name="protoOutput" id="protoOutput" >Download Encoded Response</button></td></tr>
+    <tr><td><span class="tiny"><strong>PRO TIP:</strong></span></td>
+        <td><span class="tiny">Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span></td></tr>
+</table>
 </form>
 <hr  />
 <div>
