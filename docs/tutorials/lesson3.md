@@ -6,6 +6,11 @@ in serial progression.
 ** Image Copyrights May Apply ** - the included sample videos may carry
 additional copyrights and are not meant for public resale or consumption.
 
+* [images/example_excitement_2.jpg](https://flic.kr/p/ayaqeQ)
+* [images/example_awe_1.jpg](https://flic.kr/p/RLzkvA)
+* [images/example_excitement_1.jpg](https://flic.kr/p/fN8y4d)
+* [images/example_sad_1.jpg](https://flic.kr/p/8Kmqib)
+
 
 ## Browser Interaction
 Most browsers should have no
