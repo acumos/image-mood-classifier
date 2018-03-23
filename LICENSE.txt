@@ -15,3 +15,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ============LICENSE_END=========================================================
+
+The following media files are included in this repo for demo purposes and are
+licensed and sourced as described:
+
+image-mood-classifier/docs/catalog_example.png
+- CC-BY 2.0 license. Source: https://www.flickr.com/photos/127130111@N06/32665911784
+
+image-mood-classifier/docs/tutorials/example_running.jpg
+- app screenshot composite image of multiple of the media files listed here
+
+image-mood-classifier/web_demo/images/example_awe_1.jpg
+- CC-BY 2.0 license. Source: https://www.flickr.com/photos/127130111@N06/32665911784
+
+image-mood-classifier/web_demo/images/example_excitement_1.jpg
+- CC BY-ND 2.0 license. Source: https://www.flickr.com/photos/7687126@N06/9711027186/
+
+image-mood-classifier/web_demo/images/example_excitement_2.jpg
+- CC0 license. Source: https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/
+
+image-mood-classifier/web_demo/images/example_sad_1.jpg
+- CC BY-NC-SA 2.0 license. Source: https://www.flickr.com/photos/dlanorsmada/5085090676/

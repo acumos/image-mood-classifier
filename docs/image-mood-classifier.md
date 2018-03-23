@@ -93,14 +93,14 @@ Sample images examples can be found in the [web_demo/images](web_demo/images) di
 
 ### Example Images
 For the purpose of testing the classifier a few sample images are provided.
-While these images are [approved for commercial use](https://creativecommons.org/licenses/by-nd/2.0/),
-the original author retains all rights.
+While these images are licensed for use here as described in the LICENSE.txt
+file at the root of this repo, the original author may retain some rights. See
+the source link for more info on the specific license of each image.
 
-* [happy 1](data/example_happy_1.jpg) - [flickr source](https://flic.kr/p/73ZzcE)
-* [awe 1](data/example_awe_1.jpg) - [flickr source](https://flic.kr/p/RLzkvA)
-* [excitement 1](data/example_excitement_1.jpg) - [flickr source](https://flic.kr/p/fN8y4d)
-* [excitement 2](data/example_excitement_2.jpg) - [flickr source](https://flic.kr/p/eo4YkD)
-* [sad 1](data/example_sad_1.jpg) - [flickr source](https://flic.kr/p/8Kmqib)
+* [awe 1](web_demo/images/example_awe_1.jpg) - [flickr source](https://flic.kr/p/RLzkvA)
+* [excitement 1](web_demo/images/example_excitement_1.jpg) - [flickr source](https://flic.kr/p/fN8y4d)
+* [excitement 2](web_demo/images/example_excitement_2.jpg) - [pexels source](https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/)
+* [sad 1](web_demo/images/example_sad_1.jpg) - [flickr source](https://flic.kr/p/8Kmqib)
 
 
 # Example Usages
