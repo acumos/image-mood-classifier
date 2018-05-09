@@ -80,6 +80,15 @@ def classifier_train(X, y, method="svc"):
             {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}
         ]
 
+    elif method == "dnn":  # experimental, not quite done because of label formatting
+        from keras.wrappers.scikit_learn import KerasClassifier
+        from functools import partial  # partial function
+        build_partial = partial(create_keras_model_, input_size=X.shape[1], label_size=1)
+        classifier = KerasClassifier(build_fn=build_partial, verbose=0)
+        param_grid = [
+            {'unit_size': [32, 64, 256, 512]},
+        ]
+
     # always run grid search with above
     clf = GridSearchCV(classifier, param_grid, cv=5, n_jobs=-1, verbose=2)
     clf.fit(X, y)
@@ -111,15 +120,30 @@ def model_create_pipeline(formatter, clf):
     tag_type = []
     for item in formatter.output_types_:
         for k in item:
-            tag_type.append((k, List[item[k]]))
-    ImageTagSet = create_namedtuple("ImageTagSet", tag_type)
+            tag_type.append((k, item[k]))
+    name_in = "ImageTag"
+    ImageTag = create_namedtuple(name_in, tag_type)
+    name_multiple_in = name_in + "s"
+    ImageTagSet = create_namedtuple(name_in + "Set", [(name_multiple_in, List[ImageTag])])
 
-    def predict_class(wrapped_tagset: ImageTagSet) -> ImageTagSet:
+    def predict_class(val_wrapped: ImageTagSet) -> ImageTagSet:
         '''Returns an array of float predictions'''
-        df = pd.DataFrame(list(zip(*wrapped_tagset)), columns=wrapped_tagset._fields)
+        # NOTE: we don't have a named output type, so need to match 'value' to proto output
+        # print("-===== input -===== ")
+        # print(input_set)
+        df = pd.DataFrame(getattr(val_wrapped, name_multiple_in), columns=ImageTag._fields)
+        # print("-===== df -===== ")
+        # print(df)
+        # print("-===== out df -===== ")
         tags_df = formatter.predict(df)
-        tags_list = ImageTagSet(*(col for col in tags_df.values.T))  # flatten to tag set
-        return tags_list
+        # print(tags_df)
+        tags_parts = tags_df.to_dict('split')
+        # print("-===== out list -===== ")
+        # print(output_set)
+        tags_list = [ImageTag(*r) for r in tags_parts['data']]
+        print("[{}]: Input {} row(s) ({}), output {} row(s) ({}))".format(
+              "image_classifier", len(df), ImageTagSet, len(tags_df), ImageTagSet))
+        return ImageTagSet(tags_list)
 
     # compute path of this package to add it as a dependency
     package_path = path.dirname(path.realpath(__file__))
