@@ -20,6 +20,10 @@
 
 # Image Mood Classifier Release Notes
 ## 0.5
+### 0.5.1
+* Update javascript demo to run with better CORS behavior (github htmlpreview)
+* Additional documentation for environmental variables
+
 ### 0.5.0
 * Documentation (lesson1) updated with model runner examples.  Deprecation notice
   in using explicit proto- and swagger-based serves.
