@@ -44,6 +44,18 @@ Add the `no-mask` flag to speed up training and avoid sample simulation. **(Reco
 python image_mood_classifier/classify_image.py -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
 ```
 
+Example for training a model and pushing that model that returns all scores.
+```
+export ACUMOS_USERNAME="user"; \
+export ACUMOS_PASSWORD="password";
+or
+export ACUMOS_TOKEN="a_very_long_token";
+
+export ACUMOS_PUSH="https://acumos-challenge.org/onboarding-app/v2/models"; \
+export ACUMOS_AUTH="https://acumos-challenge.org/onboarding-app/v2/auth"; \
+python image_mood_classifier/classify_image.py -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2
+```
+
 ## In-place Evaluation
 In-place evaluation **will utilize** a serialized version of the model and load
 it into memory for use in-place.  This mode is handy for quick

@@ -38,6 +38,20 @@ CORS or other cross-domain objections to dropping the file `image-mood-classes.h
 into the browser and accesing a locally hosted server API, as configured
 in [the previous tutorial](lesson2.md).
 
+### Open-source hosted run
+Utilizing the generous [htmlpreview function](https://htmlpreview.github.io/) available on
+GitHub, you can also experiment with the respository-based web resource.  This resource
+will proxy the repository `web_demo` directory into a live resource.
+
+Navigate to the [default webhost page](http://htmlpreview.github.io/?https://github.com/acumos/image-mood-classifier/blob/master/web_demo/image-mood-classes.html)
+and confirm that the resource load properly.  The image at the bottom of this guide
+is a good reference for correct page loading and display.
+
+After confirming correct page load, simply replace the value in the `Transform URL`
+field to point at your deployed instance.  For example, if you've created a
+dumped model locally, it might be a localhost port.
+
+### Local webserver run
 If you want to run the test locally, you can use the built-in python
 webserver with the line below while working in the `web_demo` directory
 (assuming you're running python3).

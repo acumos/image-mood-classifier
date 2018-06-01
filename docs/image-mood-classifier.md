@@ -58,7 +58,8 @@ index, mood class name, and probability score. The probabilities are normalized
 to sum to 1.0 over all values so that they can utilized as relative confidence scores.
 
 A web demo is included with the source code, available via the
-[Acumos Gerrit repository](https://gerrit.acumos.org/r/#/admin/projects/image-mood-classifier).
+[Acumos Gerrit repository](https://gerrit.acumos.org/r/gitweb?p=image-mood-classifier.git;a=summary)
+or the mirrored [Acumos Github repository](https://github.com/acumos/image-mood-classifier).
 It utilizes a protobuf javascript library and a few image examples to
 classify and display the top N detected mood scores, as illustrated in the model image.
 

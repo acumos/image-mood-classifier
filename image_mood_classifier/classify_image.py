@@ -110,6 +110,7 @@ def model_create_pipeline(formatter, clf):
     from acumos.modeling import Model, List, create_namedtuple
     from acumos.session import Requirements
     from os import path
+    from image_mood_classifier._version import MODEL_NAME, __version__ as VERSION
 
     # add classifier
     formatter.set_params(classifier=clf)
@@ -141,8 +142,8 @@ def model_create_pipeline(formatter, clf):
         # print("-===== out list -===== ")
         # print(output_set)
         tags_list = [ImageTag(*r) for r in tags_parts['data']]
-        print("[{}]: Input {} row(s) ({}), output {} row(s) ({}))".format(
-              "image_classifier", len(df), ImageTagSet, len(tags_df), ImageTagSet))
+        print("[{} - {}:{}]: Input {} row(s) ({}), output {} row(s) ({}))".format(
+              "classify", MODEL_NAME, VERSION, len(df), ImageTagSet, len(tags_df), ImageTagSet))
         return ImageTagSet(tags_list)
 
     # compute path of this package to add it as a dependency
@@ -180,8 +181,8 @@ def main(config={}):
     parser.add_argument('-m', '--model_type', type=str, default='rf', help='specify the underlying classifier type (rf (randomforest), svc (SVM))', choices=['svm', 'rf'])
     parser.add_argument('-f', '--feature_nomask', dest='feature_nomask', default=False, action='store_true', help='create masked samples on input')
     parser.add_argument('-n', '--add_softnoise', dest='softnoise', default=False, action='store_true', help='do not add soft noise to classification inputs')
-    parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/upload)', default='')
-    parser.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/auth)', default='')
+    parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/upload)', default=os.getenv('ACUMOS_PUSH', ""))
+    parser.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/auth)', default=os.getenv('ACUMOS_AUTH', ""))
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     parser.add_argument('-s', '--summary', type=int, dest='summary', default=0, help='summarize top N image classes are strong for which label class (only in training)')
     config.update(vars(parser.parse_args()))  # pargs, unparsed = parser.parse_known_args()
