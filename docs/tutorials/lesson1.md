@@ -39,7 +39,7 @@ model and stored in that native format in [features_testImages_artphoto.csv.bz2]
 python image_mood_classifier/classify_image.py -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model_large
 ```
 
-Add the `no-mask` flag to speed up training and avoid sample simulation. **(Recommended)**
+Add the `--feature_nomask` or `-f` flag to speed up training and avoid sample simulation. **(Recommended)**
 ```
 python image_mood_classifier/classify_image.py -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -d model
 ```

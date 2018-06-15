@@ -20,6 +20,10 @@
 
 # Image Mood Classifier Release Notes
 ## 0.5
+### 0.5.2
+* Clean up documentation for install and parameter descriptions
+* Add documentation and functionality for environment variables in push request
+
 ### 0.5.1
 * Update javascript demo to run with better CORS behavior (github htmlpreview)
 * Additional documentation for environmental variables

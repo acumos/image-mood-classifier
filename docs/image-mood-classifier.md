@@ -63,6 +63,11 @@ or the mirrored [Acumos Github repository](https://github.com/acumos/image-mood-
 It utilizes a protobuf javascript library and a few image examples to
 classify and display the top N detected mood scores, as illustrated in the model image.
 
+Once deployed, you can quickly jump to the
+[default webhost page](http://htmlpreview.github.io/?https://github.com/acumos/image-mood-classifier/blob/master/web_demo/image-mood-classes.html)
+and point to your model for a demo; see [tutorial lesson 3](tutorials/lesson3.md)
+
+
 ## Performance
 The model has a few training modes, but the algorithm below (random forest)
 seemed to perform the best between non neural-net computations.  The
@@ -96,23 +101,23 @@ image classifier performing poorly with small-resolution objects.
 This section is useful for source-based installations and is not generally intended
 for catalog documentation.
 
+
 ## Package dependencies
 Package dependencies for the core code and testing have been flattened into a
 single file for convenience. Instead of installing this package into your
 your local environment, execute the command below.
 
+**Note:** If you are using an [anaconda-based environment](https://anaconda.org),
+you may want to try installing with conda first and then pip.
+to mixing mixing package stores.
 ```
-pip install -r requirments.txt
-```
-or, if depednencies woudl be better managed by a place-holder package...
-```
-pip install .
+conda install --yes --file requirements.txt  # suggested first step if you're using conda
 ```
 
-**Note:** If you are using an [anaconda-based environment](https://anaconda.org),
-you may want to try
-installing these packages [directly](https://docs.anaconda.com/anaconda-repository/user-guide/tasks/pkgs/download-install-pkg).
-to avoid mixing of `pip` and `conda` package stores.
+Installation of the package requirements for a new environment.
+```
+pip install -r requirements.txt
+```
 
 
 ## Usage
@@ -122,16 +127,14 @@ uses.   All functionality is encapsulated in the `classify_image.py`
 script and has the following arguments.
 
 ```
-usage: classify_image.py [-h] [-l LABELS] [-p PREDICT_PATH] [-i INPUT]
-                         [-C CUDA_ENV] [-m {svm,rf}] [-f] [-n]
-                         [-a PUSH_ADDRESS] [-A AUTH_ADDRESS] [-d DUMP_MODEL]
-                         [-s SUMMARY]
+usage: classify_image.py [-h] [-p PREDICT_PATH] [-i INPUT] [-C CUDA_ENV]
+                         [-l LABELS] [-m {svm,rf}] [-f] [-n] [-a PUSH_ADDRESS]
+                         [-A AUTH_ADDRESS] [-d DUMP_MODEL] [-s SUMMARY]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -l LABELS, --labels LABELS
-                        Path to label one-column file with one row for each
-                        input
+
+main execution and evaluation functionality:
   -p PREDICT_PATH, --predict_path PREDICT_PATH
                         Save predictions from model (model must be provided
                         via 'dump_model')
@@ -141,6 +144,11 @@ optional arguments:
   -C CUDA_ENV, --cuda_env CUDA_ENV
                         Anything special to inject into CUDA_VISIBLE_DEVICES
                         environment string
+
+model creation and configuration options:
+  -l LABELS, --labels LABELS
+                        Path to label one-column file with one row for each
+                        input
   -m {svm,rf}, --model_type {svm,rf}
                         specify the underlying classifier type (rf
                         (randomforest), svc (SVM))
@@ -157,6 +165,7 @@ optional arguments:
   -s SUMMARY, --summary SUMMARY
                         summarize top N image classes are strong for which
                         label class (only in training)
+
 ```
 
 
