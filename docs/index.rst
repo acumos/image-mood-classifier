@@ -23,6 +23,6 @@ Image Mood Classifier
 .. toctree::
        :maxdepth: 2
 
-       release-notes
        image-mood-classifier
        tutorials/index
+       release-notes
