@@ -1,4 +1,3 @@
-<!---
 .. ===============LICENSE_START=======================================================
 .. Acumos CC-BY-4.0
 .. ===================================================================================
@@ -16,17 +15,24 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
--->
 
-# image-mood-classification
-A model example for image classification (for emotional impact).  This model
-relies on a first pass with image classification features and then learns
-a secondary classification layer.
+|Build Status|
 
-* [Overall Documentation](docs/image-mood-classifier.md)
-* [Release Notes](docs/release-notes.md)
-* Tutorials
-    * [Deployment and Running](docs/tutorials/lesson1.md),
-    * [Swagger API server](docs/tutorials/lesson2.md), and
-    * [Web Application](docs/tutorials/lesson3.md)
+=========================
+image-mood-classification
+=========================
 
+A model example for image classification (for emotional impact). This
+model relies on a first pass with image classification features and then
+learns a secondary classification layer.
+
+-  `Overall Documentation <docs/image-mood-classifier.rst>`__
+-  `Release Notes <docs/release-notes.rst>`__
+-  `Tutorials <docs/tutorials/index.rst>`__
+
+   -  `Deployment and Running <docs/tutorials/lesson1.rst>`__,
+   -  `Web Application <docs/tutorials/lesson3.rst>`__
+
+
+.. |Build Status| image:: https://jenkins.acumos.org/buildStatus/icon?job=image-mood-classifier-tox-verify-master
+   :target: https://jenkins.acumos.org/job/image-mood-classifier-tox-verify-master/
