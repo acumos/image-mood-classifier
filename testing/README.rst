@@ -1,4 +1,3 @@
-<!---
 .. ===============LICENSE_START=======================================================
 .. Acumos CC-BY-4.0
 .. ===================================================================================
@@ -16,10 +15,13 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
--->
 
-# testing
-This directory provides a simple web server for demonstrating an image-based classifier example.
-This web demo will launch an application with a swagger page.
 
-Please consult the [tutorial documentation](../docs/tutorials/lesson2.md) for more information.
+.. _testing:
+
+
+=======
+Testing
+=======
+This directory provides in-place testing. Please consult the
+`main documentation <../docs/image-mood-classifier.rst>`__ for more information.
