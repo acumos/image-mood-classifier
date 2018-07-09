@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "927776ba_aef2db9f",
+        "filename": "docs/tutorials/deployment.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-09T17:19:47Z",
+      "side": 1,
+      "message": "this link doesn\u0027t work - maybe link to https://github.com/acumos/image-mood-classifier/blob/master/data/features_testImages_artphoto.csv.bz2 instead?",
+      "range": {
+        "startLine": 42,
+        "startChar": 39,
+        "endLine": 42,
+        "endChar": 79
+      },
+      "revId": "ae1dad74dd3c2ba18d75ec5ae83150da16726ba0",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
