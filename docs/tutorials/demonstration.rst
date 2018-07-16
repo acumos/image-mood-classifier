@@ -65,16 +65,17 @@ dumped model locally, it might be a localhost port.
 Local webserver run
 -------------------
 
-If you want to run the test locally, you can use the built-in python
+If you want to run the test locally, you can use a supplied python
 webserver with the line below while working in the ``web_demo``
 directory (assuming you're running python3).
 
 ::
 
-    python -m http.server 5000
+    python simple-cors-http-server-python3.py 5000
 
 Afterwards, just point your browser at
 ``http://localhost:5000/image-mood-classes.html``.
+
 
 Example image mood classification demo (docker and protobuf)
 ============================================================
