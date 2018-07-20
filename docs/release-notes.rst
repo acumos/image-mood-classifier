@@ -26,6 +26,7 @@ Image Mood Classifier Release Notes
 =====
 
 -  Clean up tutorial documentation naming and remove deprecated swagger demo app
+-  Add robustness against parsing incomplete tag classifier set (e.g. reprocessing mood tags)
 
 
 0.5.2

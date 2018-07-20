@@ -24,7 +24,7 @@ Deployment: Wrapping and Executing Image Mood Classifier Models
 
 To utilize this classifier model, it trains a meta classifier on top of
 produced image classification tags to approximate the mood of the image.
-Continue to the :ref:`demonstration_face-privacy`  to see how to utilize
+Continue to the :ref:`demonstration_image-mood`  to see how to utilize
 these models with a simple demo API server.
 
 Model Deployment
@@ -87,47 +87,54 @@ Example for printing top contributors (in training data) from
 
     python image_mood_classifier/classify_image.py -f -l data/labels_testImages_artphoto.txt  -i data/features_testImages_artphoto.csv.bz2 -s 5
 
-Using the client model runner
------------------------------
+
+.. _deployment_image-mood-model_runner:
+
+Model Runner: Using the Client Library
+======================================
 
 Getting even closer to what it looks like in a deployed model, you can
-also use the model runner code to run classification locally. *(added
-v0.5.0)*
+also use the model runner code to run mood classification locally. 
+*(added v0.5.0)*
 
-1. First, decide the ports to run your mood classification and other
-   models, like the original image classification model. In the example
-   below, mood classiciation runs on port ``8887`` and image
+*Please note 
+that this model is a **cascade classifier** that requiures initial classification
+of an image into class tags on which this model is trained.  For that reason,
+you must be running an upstream image classifier that first accepts image data
+and then passes the classifications to this model.* 
+
+1. Determine the ports to run your mood classification and other
+   source models, like the original image classification model. In the example
+   below, mood classification runs on port ``8887`` and image
    classification runs on port ``8886``.
 
-2. (Optional) Second, launch the classification model and configure port
-   forwarding. For the runner to properly forward requests for you,
+2. If not already running, launch the classification model 
+   **but make sure to configure port forwarding**.  For help with 
+   deployment of the image classification (as one potential source model)
+   please see :ref:`deployment_image-classification-model_runner`.
+   For the runner to properly forward requests,
    provide a simple JSON file example called ``runtime.json`` in the
-   working directory that you run the model runner. If you modify the
-   ports to run the models, please change them accordingly. This command
-   example assumes that you have cloned the client library in a relative
-   path of ``../acumos-python-client``. The first line removes any prior
-   model directory, the second dumps the detect model to disk, and the
-   third runs the model.
+   working directory that you run the model runner. 
+   If you modify the ports to run the models, please change them accordingly. 
 
 ::
 
-    # cat runtime.json
-    {downstream": ["http://127.0.0.1:8887/classify"]}
-
+    # This line creates a configuration file for the modelrunner.
+    $ cat '{"downstream": ["http://127.0.0.1:8887/classify"]}' > runtime.json
+    
+    # This line launches the model runner, assuming you have the client library one directory up
     python ../acumos-python-client/testing/wrap/runner.py --port 8886 --modeldir model/image_classifier
 
-3. Finally, dump and launch the image mood classification model. Again,
+3. Dump and launch the image mood classification model. Again,
    if you modify the ports to run the models, please change them
    accordingly. Aside from the model and port, the main difference
-   between the above line is that the model runner is instructed to
-   *ignore* the downstream forward (``runtime.json``) file so that it
+   between the model runner line above is that the model runner is instructed to
+   *ignore* the port forward configuration file (``runtime.json``) so that it
    doesn't attempt to forward the request to itself.
 
 ::
 
-    rm -rf model;  \
-        python image_mood_classifier/classify_image.py -l data/labels_testImages_artphoto.txt -f -i data/features_testImages_artphoto.csv.bz2 -d model; \
-        python ../acumos-python-client/testing/wrap/runner.py --port 8887 --modeldir model/image_mood_classifier  --no_downstream
+    python ../acumos-python-client/testing/wrap/runner.py --port 8887 --modeldir model/image_mood_classifier  --no_downstream
 
 Performance Analysis
 --------------------
