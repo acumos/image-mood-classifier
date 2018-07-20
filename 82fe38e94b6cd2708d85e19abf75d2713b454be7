@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2673d0ae_7a19f5a7",
+        "filename": "docs/tutorials/deployment.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 10
+      },
+      "writtenOn": "2018-07-20T16:17:46Z",
+      "side": 1,
+      "message": "@Chris, please read the changes here w.r.t. clearer instructions for deployment.  It made sense to include them in the update now.",
+      "revId": "82fe38e94b6cd2708d85e19abf75d2713b454be7",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
