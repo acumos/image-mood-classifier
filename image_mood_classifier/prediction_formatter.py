@@ -97,7 +97,8 @@ class Formatter(BaseEstimator, ClassifierMixin):
                 # https://stackoverflow.com/questions/7837722/what-is-the-most-efficient-way-to-loop-through-dataframes-with-pandas/34311080#34311080
                 idxF = 0
                 for rowDf in zip(rowsG[self.input_columns['tag']], rowsG[self.input_columns['data']]):
-                    npData[idx][self.input_map[rowDf[0]]] = rowDf[1]
+                    if rowDf[0] in self.input_map:  # safety against bad tag input
+                        npData[idx][self.input_map[rowDf[0]]] = rowDf[1]
                     idxF += 1
                     if idxF >= numNonMasked:
                         break

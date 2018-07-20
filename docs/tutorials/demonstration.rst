@@ -76,6 +76,25 @@ directory (assuming you're running python3).
 Afterwards, just point your browser at
 ``http://localhost:5000/image-mood-classes.html``.
 
+	
+	
+Usage of protobuf binaries for testing
+--------------------------------------
+	
+Binary (protobuf encoded) data can be downloaded from the web page or directly with curl.
+Two demonstration binaries have been included in the source repository for testing, as
+captured from the :ref:`demonstration-image_classification_running_example` (awe) image below.
+
+- ``protobuf.Image.bin`` - a protobuf-encoded image of the beach (awe) image
+- ``protobuf.classifier.ImageTagSet.bin`` - a protobuf-encoded classification tag set for the beach (awe) image
+- ``protobuf.mood.ImageTagSet.bin`` - a protobuf-encoded mood classifier tag set for the beach (awe) image
+
+
+Within the webpage demo, simply select the correct protobuf method and then drag and
+drop the binary file into the ``Protobuf Payload Input`` file uploader.  It will be
+immediately uploaded through javascript to your specified ``Transform Url``.
+	
+
 
 Example image mood classification demo (docker and protobuf)
 ============================================================
@@ -146,6 +165,7 @@ during runtime.
 
 Example web application with *awe* mood classification
 
+.. _demonstration-image_classification_running_example:
 
 .. image:: example_running.jpg
     :alt: example web application with *awe* mood
