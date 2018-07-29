@@ -27,41 +27,32 @@ image-mood-classes.html - Demonstrate an image mood classification service
 D. Gibbon 8/1/17
 E. Zavesky 10/11/17
 Rewrite to utilize simple image-based processing steps.
+E. Zavesky 7/28/18
+Rewrite to utilize simple image-based processing steps.
 -->
 <title>Image Mood Classification</title>
-<link rel="stylesheet" type="text/css" href="image-mood-classes.css" />
+<link rel="stylesheet" type="text/css" href="demo-framework.css" />
 </head>
 <body>
-<video class="videoWin" id="srcVideo" style="display:none" muted controls crossorigin>
-    <!-- place holder for future video integration -->
-</video>
-<div >
-    <canvas id="srcImgCanvas" width="480" height="270" crossorigin></canvas>
-</div>
-<div id="resultsDiv"><div class="header">Image Mood</div></div>
-<div id='videoSelector'></div>
-<div id="sourceRibbon">
-    <span class="tiny">Select an image for analysis or upload your own!</span><br />
-    <div>
-        <img src="images/example_excitement_2.jpg" />
-        <span><a href="https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/" target="_new">pexels source</a></span>
+    <div class="mediaRibbon">
+        <div>
+            <video class="videoWin" id="srcVideo" width="120" height="85" muted controls crossorigin>
+                <source id="mp4" src="video/unknown.mp4" type="video/mp4"></source>
+                Your browser does not support the video tag. Please use Chrome or Firefox.
+            </video>
+            <span>post-processed image</span>
+            <canvas id="srcImgCanvas" width="380" height="270" crossorigin></canvas>
+        </div>
+        <div id="resultsDiv">(classification results)</div>
     </div>
-    <div>
-        <img src="images/example_awe_1.jpg" />
-        <span><a href="https://www.pexels.com/photo/art-beach-beautiful-clouds-269583/" target="_new">pexels source</a></span>
+    <img id="destImg" width="380" height="270" style="display:none" crossorigin />
+
+    <br/>
+    <hr />
+    <div id="sourceRibbon" class="mediaRibbon">
+        <span class="tiny">Select an image for analysis or upload your own!</span><br />
     </div>
-    <div>
-        <img src="images/example_excitement_1.jpg" />
-        <span><a href="https://www.pexels.com/photo/sea-man-person-holiday-6557/" target="_new">pexels source</a></span>
-    </div>
-    <div>
-        <img src="images/example_sad_1.jpg" />
-        <span><a href="https://www.pexels.com/photo/burial-cemetery-countryside-cross-116909/" target="_new">pexels source</a></span>
-    </div>
-    <div>
-        <label>Custom Upload</label><br/>
-        <input type="file" id="imageLoader" name="imageLoader"/>
-    </div>
+    <hr  />
 </div>
     <br />
     <span class="tiny"><em>Note: These sample images are copyright of their original authors and are provided

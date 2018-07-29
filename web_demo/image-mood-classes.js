@@ -46,7 +46,29 @@ $(document).ready(function() {
         classificationServer: urlDefault,
         canvasMaxW: $("#srcImgCanvas").width()*1.5,
         canvasMaxH: $("#srcImgCanvas").height()*1.5,
-        protoList: [["model.image.proto", true], ["model.tag.proto", false]]
+        protoList: [["model.image.proto", true], ["model.tag.proto", false]],
+        mediaList: [
+            {
+                'img': 'images/example_excitement_2.jpg',
+                'source': 'https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/',
+                'name': 'exciting balloons'
+            },
+            {
+                'img': 'images/example_awe_1.jpg',
+                'source': 'https://www.pexels.com/photo/art-beach-beautiful-clouds-269583',
+                'name': 'beach awe'
+            },
+            {
+                'img': 'images/example_excitement_1.jpg',
+                'source': 'https://www.pexels.com/photo/sea-man-person-holiday-6557',
+                'name': 'ocean excitement'
+            },
+            {
+                'img': 'images/example_sad_1.jpg',
+                'source': 'https://www.pexels.com/photo/burial-cemetery-countryside-cross-116909',
+                'name': 'sad cemetry'
+            },
+        ],
     });
 });
 
