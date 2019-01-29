@@ -22,6 +22,12 @@
 Image Mood Classifier Release Notes
 ===================================
 
+0.5.4
+=====
+
+-  Clean up attribution for image sources
+
+
 0.5.3
 =====
 
