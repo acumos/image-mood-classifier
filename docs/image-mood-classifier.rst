@@ -217,15 +217,16 @@ Example Images
 --------------
 
 For the purpose of testing the classifier a few sample images are
-provided. While these images are licensed for use here as described in
-the LICENSE.txt file at the root of this repo, the original author may
-retain some rights. See the source link for more info on the specific
+provided. These example content files are intended to demonstrate the 
+performance and functionality of the model included within the Acumos platform.
+See the source link for more info on the specific
 license of each image.
 
--  awe 1 - `flickr source <https://flic.kr/p/RLzkvA>`__
--  excitement 1 - `flickr source <https://flic.kr/p/fN8y4d>`__
--  excitement 2 - `pexels source <https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/>`__
--  sad 1 - `flickr source <https://flic.kr/p/8Kmqib>`__
+-  `example_excitement_2.jpg <https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/>`__
+-  `example_awe_1.jpg <https://www.pexels.com/photo/art-beach-beautiful-clouds-269583/>`__
+-  `example_excitement_1.jpg <https://www.pexels.com/photo/sea-man-person-holiday-6557/>`__
+-  `example_sad_1.jpg <https://www.pexels.com/photo/burial-cemetery-countryside-cross-116909/>`__
+
 
 Example Usages
 ==============
