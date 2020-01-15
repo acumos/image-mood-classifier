@@ -27,12 +27,8 @@ This web page sample allows the user to submit an image to an image
 classification and image mood classification service in serial
 progression.
 
-**Image Copyrights May Apply** - the included sample videos may
-carry additional copyrights and are not meant for public resale or
-consumption.
-
 -  `images/example_excitement_2.jpg <https://www.pexels.com/photo/red-green-hot-air-balloon-during-daytime-51377/>`__
--  `images/example_awe_1.jpg <https://flic.kr/p/RLzkvAhttps://www.pexels.com/photo/art-beach-beautiful-clouds-269583/>`__
+-  `images/example_awe_1.jpg <https://www.pexels.com/photo/art-beach-beautiful-clouds-269583/>`__
 -  `images/example_excitement_1.jpg <https://www.pexels.com/photo/sea-man-person-holiday-6557/>`__
 -  `images/example_sad_1.jpg <https://www.pexels.com/photo/burial-cemetery-countryside-cross-116909/>`__
 
