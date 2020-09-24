@@ -2,4 +2,3 @@
 #
 42f0c83244389e408b42fa668348002012ecba46                                                	GitHub Replication
 be18680f6f0134eaf5fcc13bec316931d15aef36                                                	saml/acumos-gerrit-image-mood-classifier-committers
-ldap:cn=acumos-gerrit-image-mood-classifier-committers,ou=Groups,dc=freestandards,dc=org	ldap/acumos-gerrit-image-mood-classifier-committers
